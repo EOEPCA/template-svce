@@ -1,0 +1,5 @@
+= Catalogue Service
+
+- Javalin framework
+- Log4j2 + YAML
+- Junit 5

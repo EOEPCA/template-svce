@@ -1,0 +1,51 @@
+plugins {
+    id "application"
+    id 'com.github.johnrengelman.shadow' version '2.0.2'
+}
+
+mainClassName = "catalogue.CatalogueService"
+
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+ext.junit_platform_ver = "1.1.0"
+ext.junit_jupiter_ver = "5.1.0"
+ext.log4j2_ver = "2.10.0"
+
+dependencies {
+
+    // Log4j2 + Jackson for YAML config support and SLF4J adapter
+    compile("org.apache.logging.log4j:log4j-api:$log4j2_ver")
+    compile("org.apache.logging.log4j:log4j-core:$log4j2_ver")
+    compile("org.apache.logging.log4j:log4j-slf4j-impl:$log4j2_ver")
+    compile("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.3")
+    compile("com.fasterxml.jackson.core:jackson-databind:2.5.4")
+
+    compile("io.javalin:javalin:2.4.0")
+
+    // Junit 5
+    testCompile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_ver")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_ver")
+    testRuntime("org.junit.platform:junit-platform-launcher:$junit_platform_ver")
+}
+
+shadowJar {
+    baseName = project.name
+    classifier = null
+    version = null
+}
+
+test {
+    useJUnitPlatform()
+//    testLogging {
+//        events "passed", "skipped", "failed"
+//    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.10.1'
+}
+

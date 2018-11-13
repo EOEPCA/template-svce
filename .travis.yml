@@ -1,0 +1,34 @@
+sudo: required
+
+language: java
+install: false #true
+
+jdk:
+  - openjdk10
+
+services:
+  - docker
+
+
+script:
+  - ./gradlew build #--scan -s
+  - ls -l build/libs
+  - docker build -t eoepca/catalogue-service .
+  - docker images
+  - docker run -d --rm -p 8080:7000 --name cat-svc eoepca/catalogue-service
+  - sleep 15
+#  - docker ps -a
+  - curl -s http://localhost:8080/search | jq '.'
+#  - docker logs cat-svc
+
+
+#before_install:
+#  - docker build -t eoepca/catalogue-service .
+
+notifications:
+  email:
+    recipients:
+      - paul.cox@telespazio.com
+      - richard.conway@telespazio.com
+    on_success: never #never # default: change
+    on_failure: never # default: always
