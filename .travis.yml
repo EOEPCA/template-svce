@@ -20,6 +20,7 @@ script:
 #  - docker ps -a
   - curl -s http://localhost:8080/search | jq '.'
 #  - docker logs cat-svc
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 
 #before_install:
@@ -32,3 +33,6 @@ notifications:
       - richard.conway@telespazio.com
     on_success: never #never # default: change
     on_failure: never # default: always
+
+
+# Iv7AvLTan0mCnHXMxsZLdHvM4Yg/NBMcaQiS7Qb74Ya2+6E1RbWygY7CpNHdliNFkwtgZQR+ExEU1DljpOBrOlkiszuHfdEk3Y+3u+jhk1DxfvsY83n7F4SvLN+HUAdMoCuvOvTHvjo11We5TPCOqUgLfEIWYm6GrKfcTPfstjpj/AZxY1Q9ZD1u+1nEd5cG2Bs8ITAgjL4bIWGk/wUN68lafD9sdbbfLFCl2WEgUpYvqqhPQej6H+LKTbiVudmfHD3umIdiqHsFwOH2jG5jQlIa8L/qpJI2G+Q6dweItHa4+DDtLwVy9Awpj/Wo9SaSYPdKUmkbZ1XzxYvkRO5S4mOGZJB/yA2aB8NRi22uShwzTMNE5W3ug8cjMV+jlfqJYJjOwUjs+DSBJ+K7BYE/6MTtmZgCHC8UTIwR3YXo43HcUDATPOqAuL7HNhVDahZzg7C+5Gch61KpWEu1FGS0rQ3U4LFIpzM9UMOqe92W2Rw4QScnLdBdFhZ67jgZS9OwVfWEgLf6QcMXv1pRIYr2Lc/WjZHNP+3EOoWrGdljZMKEXDsFdHURL16odwQfx78/sN7Mn3rZDZvoalJsXZbYD5oyLKePrjHkZdpqyhtjjv6XDa/NadeQR9iV/nkWXbdFjUmviSFkvokNP8c2P+vx05SqW16X6FvfeElQQwtuUNI=
