@@ -21,6 +21,8 @@ script:
   - curl -s http://localhost:8080/search | jq '.'
 #  - docker logs cat-svc
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker tag eoepca/catalogue-service $DOCKER_USERNAME/catalogue-service
+  - docker push $DOCKER_USERNAME/catalogue-service   # defaults to docker hub
 
 
 #before_install:
