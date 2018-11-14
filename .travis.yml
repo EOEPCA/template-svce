@@ -39,6 +39,8 @@ jobs:
     - stage: production
       if: branch = master # depends on release stage so this should be redundant    
       install: skip
+      # We need the systemd for the kubeadm and it's default from 16.04+
+      dist: xenial
       env: 
         - CHANGE_MINIKUBE_NONE_USER=true
         - K8S_VER=v1.12.0
