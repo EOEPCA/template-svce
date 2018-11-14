@@ -1,4 +1,8 @@
 sudo: required
+language: java
+install: false #true
+jdk:
+  - openjdk10
 
 
 services:
@@ -9,10 +13,6 @@ services:
 jobs:
   include:
     - stage: build (compile, unit test, package)
-      language: java
-      install: false #true
-      jdk:
-        - openjdk10
       script:
         - ./gradlew build #--scan -s
         #  - ls -l build/libs
