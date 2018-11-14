@@ -1,18 +1,14 @@
 sudo: required
 language: java
 install: false #true
-jdk:
-  - openjdk10
-
 
 services:
   - docker
 
-# stages do not share storage
-
 jobs:
   include:
     - stage: build (compile, unit test, package)
+      jdk: openjdk10
       script:
         - ./gradlew build #--scan -s
         #  - ls -l build/libs
@@ -23,7 +19,7 @@ jobs:
         - docker push $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER   # defaults to docker hub
       
     - stage: smoke and acceptance test
-      install: skip
+      install: skip  # without this there's a git clone and gradlew assemble executed! 
       script:
         - docker run -d --rm -p 8080:7000 --name cat-svc $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER
         - sleep 15  # wait for startup
