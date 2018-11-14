@@ -23,6 +23,7 @@ jobs:
         - docker push $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER   # defaults to docker hub
       
     - stage: smoke and acceptance test
+      install: skip
       script:
         - docker run -d --rm -p 8080:7000 --name cat-svc $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER
         - sleep 15  # wait for startup
@@ -32,6 +33,7 @@ jobs:
       
     - stage: release
       if: branch = master
+      install: skip
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - docker pull $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER  # have to pull locally in order to tag as a release 
