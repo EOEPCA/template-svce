@@ -73,8 +73,8 @@ jobs:
         #- curl localhost:10249/proxyMode
         - kubectl expose deployment catalogue-service-deployment --name=cat-k8s-svce --port=8080 --target-port=8080 --type=NodePort
         - kubectl get svc cat-k8s-svce
-        - kubectl get svc cat-k8s-svce -o json | jq '.'
-        - curl http://10.104.241.124:8080/ping
+        - clusterIP=$(kubectl get svc cat-k8s-svce -o json | jq -r '.spec.clusterIP')
+        - curl http://${clusterIP}:8080/ping
 
 
 
