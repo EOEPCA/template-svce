@@ -66,13 +66,13 @@ jobs:
 
       script:
         - kubectl apply -f kubernetes/application.yaml
-        - kubectl describe deployment catalogue-service-deployment
         - kubectl get deployments catalogue-service-deployment
         - kubectl logs -lapp=catalogue-service --all-containers=true
         - kubectl get nodes
         #- curl localhost:10249/proxyMode
-        - kubectl expose deployment catalogue-service-deployment --name=cat-k8s-svce --port=8080 --target-port=8080 --type=NodePort
+        - kubectl expose deployment catalogue-service-deployment --name=cat-k8s-svce --port=8080 --target-port=7000 --type=NodePort
         - kubectl get svc cat-k8s-svce
+        - kubectl describe deployment catalogue-service-deployment        
         - clusterIP=$(kubectl get svc cat-k8s-svce -o json | jq -r '.spec.clusterIP')
         - curl http://${clusterIP}:8080/ping
 

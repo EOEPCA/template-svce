@@ -20,4 +20,4 @@ spec:
       - name: cat-svce
         image: eoepcaci/catalogue-service:release_14
         ports:
-        - containerPort: 8080
+        - containerPort: 7000
