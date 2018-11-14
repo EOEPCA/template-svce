@@ -35,6 +35,22 @@ jobs:
         - docker pull $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER  # have to pull locally in order to tag as a release 
         - docker tag $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
         - docker push $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
+    
+    - stage: production
+      if: branch = master # depends on release stage so this should be redundant    
+      env: CHANGE_MINIKUBE_NONE_USER=true
+      before_script:
+        - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v1.11.0/bin/linux/amd64/kubectl && chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+        - curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+        - sudo minikube start --vm-driver=none --kubernetes-version=v1.11.0
+        - minikube update-context
+        - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
+      script:
+        - kubectl apply -f kubernetes/application.yaml
+        - kubectl describe deployment nginx-deployment
+        - kubectl get pods -l app=nginx
+
+
 
 notifications:
   email:
