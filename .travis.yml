@@ -74,9 +74,9 @@ jobs:
         - kubectl get svc cat-k8s-svce
         - kubectl get service cat-k8s-svce --output='jsonpath="{.spec.ports[0].nodePort}"'
         - kubectl describe deployment catalogue-service-deployment
-        - minikube ip  # local host machine's minikube VM IP        
+        - minikubeIP=$(minikube ip)  # local host machine's minikube VM IP        
         - clusterIP=$(kubectl get svc cat-k8s-svce -o json | jq -r '.spec.clusterIP')
-        - curl http://${clusterIP}:8080/ping
+        - curl http://${minikubeIP}:8080/ping
 
 # minikube service cat-k8s-svce --url
 
