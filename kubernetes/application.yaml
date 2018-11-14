@@ -18,6 +18,6 @@ spec:
         ports:
         - containerPort: 80
       - name: service
-        image: catalogue-service:release_14
+        image: eoepcaci/catalogue-service:release_14
         ports:
         - containerPort: 8080
