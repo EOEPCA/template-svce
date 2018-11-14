@@ -17,7 +17,7 @@ spec:
         image: nginx:1.7.9
         ports:
         - containerPort: 80
-      - name: service
+      - name: cat-svce
         image: eoepcaci/catalogue-service:release_14
         ports:
         - containerPort: 8080
