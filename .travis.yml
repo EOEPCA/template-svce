@@ -31,9 +31,12 @@ jobs:
       #  - docker logs cat-svc
       
     - stage: release
+      if: branch = master
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker pull $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER  # have to pull locally in order to tag as a release 
         - docker tag $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
+        - docker push $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
 
 notifications:
   email:
