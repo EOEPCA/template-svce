@@ -37,13 +37,20 @@ jobs:
         - docker push $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
     
     - stage: production
-      if: branch = master # depends on release stage so this should be redundant    
+
+      if: branch = master # depends on release stage so this should be redundant
+
       install: skip
+
+      # Minikube installation taken from: https://github.com/LiliC/travis-minikube/blob/minikube-30-kube-1.12/.travis.yml
+
       # We need the systemd for the kubeadm and it's default from 16.04+
       dist: xenial
+
       env: 
         - CHANGE_MINIKUBE_NONE_USER=true
         - K8S_VER=v1.12.0
+
       before_script:
         # Make root mounted as rshared to fix kube-dns issues.
         - sudo mount --make-rshared /
@@ -59,7 +66,7 @@ jobs:
 
       script:
         - kubectl apply -f kubernetes/application.yaml
-        - kubectl describe deployment nginx-deployment
+        - kubectl describe deployment catalogue-service-deployment
         - kubectl get pods -l app=nginx
 
 
