@@ -70,9 +70,10 @@ jobs:
         - kubectl get deployments catalogue-service-deployment
         - kubectl logs -lapp=catalogue-service --all-containers=true
         - kubectl get nodes
-        - curl localhost:10249/proxyMode
-        - kubectl expose deployment catalogue-service-deployment --name=nodeport --port=8080 --target-port=8080 --type=NodePort
-        - curl http://localhost:8080/ping
+        #- curl localhost:10249/proxyMode
+        - kubectl expose deployment catalogue-service-deployment --name=cat-k8s-svce --port=8080 --target-port=8080 --type=NodePort
+        - kubectl get svc cat-k8s-svce
+        #- curl http://localhost:8080/ping
 
 
 
