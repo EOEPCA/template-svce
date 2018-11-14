@@ -1,36 +1,39 @@
 sudo: required
 
-language: java
-install: false #true
-
-jdk:
-  - openjdk10
 
 services:
   - docker
 
+# stages do not share storage
+
 jobs:
   include:
     - stage: build (compile, unit test, package)
+      language: java
+      install: false #true
+      jdk:
+        - openjdk10
       script:
         - ./gradlew build #--scan -s
-      #  - ls -l build/libs
+        #  - ls -l build/libs
         - docker build -t eoepca/catalogue-service .
-      #  - docker images
+        #  - docker images
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker tag eoepca/catalogue-service $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER
+        - docker push $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER   # defaults to docker hub
       
-    - stage: smoke test
+    - stage: smoke and acceptance test
       script:
-        - docker run -d --rm -p 8080:7000 --name cat-svc eoepca/catalogue-service
-        - sleep 15
+        - docker run -d --rm -p 8080:7000 --name cat-svc $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER
+        - sleep 15  # wait for startup
       #  - docker ps -a
-        - curl -s http://localhost:8080/search | jq '.'
+        - curl -s http://localhost:8080/search | jq '.'  # trivial smoke test
       #  - docker logs cat-svc
       
-    - stage: docker push      
+    - stage: release
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker tag eoepca/catalogue-service $DOCKER_USERNAME/catalogue-service
-        - docker push $DOCKER_USERNAME/catalogue-service   # defaults to docker hub
+        - docker tag $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
 
 notifications:
   email:
