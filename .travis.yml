@@ -72,11 +72,13 @@ jobs:
         #- curl localhost:10249/proxyMode
         - kubectl expose deployment catalogue-service-deployment --name=cat-k8s-svce --port=8080 --target-port=7000 --type=NodePort
         - kubectl get svc cat-k8s-svce
-        - kubectl describe deployment catalogue-service-deployment        
+        - kubectl get service cat-k8s-svce --output='jsonpath="{.spec.ports[0].nodePort}"'
+        - kubectl describe deployment catalogue-service-deployment
+        - minikube ip  # local host machine's minikube VM IP        
         - clusterIP=$(kubectl get svc cat-k8s-svce -o json | jq -r '.spec.clusterIP')
         - curl http://${clusterIP}:8080/ping
 
-
+# minikube service cat-k8s-svce --url
 
 notifications:
   email:
