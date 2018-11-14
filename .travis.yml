@@ -71,8 +71,8 @@ jobs:
         - kubectl logs -lapp=catalogue-service --all-containers=true
         - kubectl get nodes
         - curl localhost:10249/proxyMode
-        - kubectl expose deployment catalogue-service-deployment --name=nodeport --port=80 --target-port=8081 --type=NodePort
-        - curl http://localhost:8081
+        - kubectl expose deployment catalogue-service-deployment --name=nodeport --port=8080 --target-port=8080 --type=NodePort
+        - curl http://localhost:8080/ping
 
 
 
