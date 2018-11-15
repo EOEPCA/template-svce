@@ -88,6 +88,7 @@ jobs:
         - clusterIP=$(kubectl get svc cat-svce -o json | jq -r '.spec.clusterIP')
         - echo $nodePort $minikubeIP $clusterIP
         - curl -s http://${minikubeIP}:${nodePort2}/
+        - curl http://${minikubeIP}:${nodePort2}/search | jq '.'
         - curl http://${minikubeIP}:${nodePort}/search | jq '.'
 
 # Make sure created pod is scheduled and running.
