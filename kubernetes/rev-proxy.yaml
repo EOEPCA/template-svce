@@ -15,7 +15,7 @@ data:
         listen 80;
 
         location / {
-            proxy_pass http://hello;
+            proxy_pass http://cat-svce:7000;
         }
     }
 
@@ -30,8 +30,8 @@ spec:
     tier: frontend
   ports:
   - protocol: "TCP"
-    port: 80
-    targetPort: 80
+    port: 8080      
+    targetPort: 80  # container port
   type: NodePort
 ---
 apiVersion: apps/v1
@@ -69,3 +69,4 @@ spec:
             items:
             - key: special.level
               path: keys
+              

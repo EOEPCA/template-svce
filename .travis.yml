@@ -35,6 +35,8 @@ jobs:
         - docker pull $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER  # have to pull locally in order to tag as a release 
         - docker tag $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
         - docker push $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
+        - docker tag $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/catalogue-service:latest
+        - docker push $DOCKER_USERNAME/catalogue-service:latest
     
     - stage: production
 
@@ -73,7 +75,7 @@ jobs:
         - kubectl logs deployment/catalogue-service-deployment --all-containers=true
         - kubectl get nodes
         #- curl localhost:10249/proxyMode
-        - kubectl expose deployment catalogue-service-deployment --name=cat-k8s-svce --port=8080 --target-port=7000 --type=NodePort
+        #- kubectl expose deployment catalogue-service-deployment --name=cat-k8s-svce --port=8080 --target-port=7000 --type=NodePort
         - kubectl get svc cat-k8s-svce
         - kubectl get service cat-k8s-svce -o json        
         - nodePort=$(kubectl get service cat-k8s-svce --output=jsonpath='{.spec.ports[0].nodePort}')
