@@ -7,16 +7,14 @@ metadata:
   name: cat-svce  # DNS name?
 spec:
   type: NodePort  # TODO
-  # selector:
-  #   app: catalogue-service
-  #   tier: backend
+  selector: # matches to the pod template spec?
+    app: catalogue-service
+    tier: service
   ports:
   - protocol: TCP
     port: 8080
     targetPort: 7000
     name: http
-
-
 
 ---
 apiVersion: apps/v1
@@ -25,13 +23,15 @@ metadata:
   name: catalogue-service-deployment
 spec:
   selector:
-    matchLabels:
+    matchLabels: # matches to the pod template spec?
       app: catalogue-service
+      tier: service
   replicas: 1 # tells deployment to run 1 pod matching the template
   template:
     metadata:
       labels:
         app: catalogue-service
+        tier: service
     spec:
       containers:
       # - name: nginx
