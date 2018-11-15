@@ -7,6 +7,15 @@ metadata:
 data:
   # example of a complex property defined using --from-file
   nginx.conf: |-
+    worker_processes  1;  ## Default: 1
+    error_log  logs/error.log;
+    pid        logs/nginx.pid;
+    worker_rlimit_nofile 8192;
+
+    events {
+      worker_connections  1024;  ## Default: 1024
+    }
+
     http {
       upstream cat-svce {
           server cat-svce:8080;
