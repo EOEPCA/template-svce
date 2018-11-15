@@ -75,6 +75,7 @@ jobs:
         - kubectl get deployments catalogue-service-deployment
         #- kubectl logs -lapp=catalogue-service --all-containers=true
         - kubectl logs deployment/catalogue-service-deployment --all-containers=true
+        - kubectl logs deployment/frontend --all-containers=true
         #- kubectl expose deployment catalogue-service-deployment --name=cat-svce2 --port=8083 --target-port=7000 --type=NodePort
         #- kubectl get svc cat-svce
         - kubectl get service cat-svce -o json        

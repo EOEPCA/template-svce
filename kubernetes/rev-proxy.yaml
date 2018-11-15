@@ -7,16 +7,18 @@ metadata:
 data:
   # example of a complex property defined using --from-file
   nginx.conf: |-
-    upstream cat-svce {
-        server cat-svce;
-    }
+    http {
+      upstream cat-svce {
+          server cat-svce:8080;
+      }
 
-    server {
-        listen 80;
+      server {
+          listen 80;
 
-        location / {
-            proxy_pass http://cat-svce:8080;
-        }
+          location / {
+              proxy_pass http://cat-svce;
+          }
+      }
     }
 
 ---
