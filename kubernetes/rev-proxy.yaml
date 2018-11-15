@@ -8,8 +8,8 @@ data:
   # example of a complex property defined using --from-file
   nginx.conf: |-
     worker_processes  1;  ## Default: 1
-    error_log  logs/error.log;
-    pid        logs/nginx.pid;
+    #error_log  logs/error.log;
+    #pid        logs/nginx.pid;
     worker_rlimit_nofile 8192;
 
     events {
