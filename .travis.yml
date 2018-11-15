@@ -68,6 +68,7 @@ jobs:
 
       script:
         - kubectl apply -f kubernetes/micro-service.yaml
+        - kubectl apply -f kubernetes/rev-proxy.yaml        
         - sleep 60
         - kubectl get nodes
         - kubectl get pods --all-namespaces
@@ -79,12 +80,14 @@ jobs:
         #- kubectl get svc cat-svce
         - kubectl get service cat-svce -o json        
         - nodePort=$(kubectl get service cat-svce --output=jsonpath='{.spec.ports[0].nodePort}')
-        #- nodePort2=$(kubectl get svc cat-svce -o json | jq -r '.spec.ports[0].nodePort')
+        - nodePort2=$(kubectl get svc frontend --output=jsonpath='{.spec.ports[0].nodePort}')
         - kubectl describe deployment catalogue-service-deployment
+        - kubectl describe service cat-svce
+        - kubectl describe service frontend
         - minikubeIP=$(minikube ip)  # local host machine's minikube VM IP        
         - clusterIP=$(kubectl get svc cat-svce -o json | jq -r '.spec.clusterIP')
         - echo $nodePort $minikubeIP $clusterIP
-        - curl http://${minikubeIP}:${nodePort}/ping | echo
+        - curl http://${minikubeIP}:${nodePort2}/ | echo
         - curl http://${minikubeIP}:${nodePort}/search | jq '.'
 
 
