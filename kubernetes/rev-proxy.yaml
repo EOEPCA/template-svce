@@ -73,7 +73,11 @@ spec:
               command: ["/usr/sbin/nginx","-s","quit"]
         volumeMounts:
         - name: config-volume
-          mountPath: /etc/nginx  # /etc/nginx/nginx.conf
+          #mountPath: /etc/nginx
+          # mounting an individual file as mounting the whole directory breaks sub-directories used
+          # for log files.
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
       volumes:
         - name: config-volume
           configMap:
