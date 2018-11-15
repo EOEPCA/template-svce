@@ -1,3 +1,21 @@
+
+# equivalent to
+# kubectl expose deployment catalogue-service-deployment --name=cat-svce --port=8080 --target-port=7000 --type=NodePort
+apiVersion: v1
+kind: Service
+metadata:
+  name: cat-svce  # DNS name?
+spec:
+  selector:
+    app: catalogue-service
+    tier: backend
+  ports:
+  - protocol: "TCP"
+    port: 8080
+    targetPort: 7000
+  type: NodePort
+
+---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
@@ -18,6 +36,6 @@ spec:
         ports:
         - containerPort: 80
       - name: cat-svce
-        image: eoepcaci/catalogue-service:release_14
+        image: eoepcaci/catalogue-service:release_14  # TODO
         ports:
         - containerPort: 7000

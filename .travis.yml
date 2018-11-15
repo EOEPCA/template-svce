@@ -65,7 +65,7 @@ jobs:
         - kubectl cluster-info        
 
       script:
-        - kubectl apply -f kubernetes/application.yaml
+        - kubectl apply -f kubernetes/micro-service.yaml
         - sleep 60
         - kubectl get pods --all-namespaces
         - kubectl get deployments catalogue-service-deployment
@@ -84,6 +84,12 @@ jobs:
         - echo $nodePort $nodePort2 $minikubeIP $clusterIP
         - curl http://${minikubeIP}:${nodePort}/ping | echo
         - curl http://${minikubeIP}:${nodePort}/search | jq '.'
+
+
+# create versus apply?
+#kubectl create -f kubernetes/micro-service.yaml
+#kubectl create -f kubernetes/rev-proxy.yaml
+
 
 # minikube service cat-k8s-svce --url
 

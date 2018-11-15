@@ -1,0 +1,71 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  #creationTimestamp: 2016-02-18T19:14:38Z
+  name: nginx-config
+  namespace: default
+data:
+  # example of a complex property defined using --from-file
+  nginx.conf: |-
+    upstream hello {
+        server hello;
+    }
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://hello;
+        }
+    }
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: hello
+    tier: frontend
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 80
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: hello
+      tier: frontend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/usr/sbin/nginx","-s","quit"]
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/nginx  # /etc/nginx/nginx.conf
+      volumes:
+        - name: config-volume
+          configMap:
+            name: nginx-config
+            items:
+            - key: special.level
+              path: keys
