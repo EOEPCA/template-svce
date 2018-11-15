@@ -1,25 +1,25 @@
-# kind: ConfigMap
-# apiVersion: v1
-# metadata:
-#   #creationTimestamp: 2016-02-18T19:14:38Z
-#   name: nginx-config
-#   namespace: default
-# data:
-#   # example of a complex property defined using --from-file
-#   nginx.conf: |-
-#     upstream hello {
-#         server hello;
-#     }
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  #creationTimestamp: 2016-02-18T19:14:38Z
+  name: nginx-config
+  namespace: default
+data:
+  # example of a complex property defined using --from-file
+  nginx.conf: |-
+    upstream cat-svce {
+        server cat-svce;
+    }
 
-#     server {
-#         listen 80;
+    server {
+        listen 80;
 
-#         location / {
-#             proxy_pass http://cat-svce:8080;
-#         }
-#     }
+        location / {
+            proxy_pass http://cat-svce:8080;
+        }
+    }
 
-# ---
+---
 
 apiVersion: v1
 kind: Service
@@ -60,14 +60,11 @@ spec:
           preStop:
             exec:
               command: ["/usr/sbin/nginx","-s","quit"]
-        # volumeMounts:
-        # - name: config-volume
-        #   mountPath: /etc/nginx  # /etc/nginx/nginx.conf
-      # volumes:
-      #   - name: config-volume
-      #     configMap:
-      #       name: nginx-config
-      #       items:
-      #       - key: special.level
-      #         path: keys
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/nginx  # /etc/nginx/nginx.conf
+      volumes:
+        - name: config-volume
+          configMap:
+            name: nginx-config # include all files in the ConfigMap at the mount point
               
