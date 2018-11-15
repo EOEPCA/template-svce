@@ -80,6 +80,7 @@ jobs:
         #- kubectl get svc cat-svce
         - kubectl get service cat-svce -o json        
         - nodePort=$(kubectl get service cat-svce2 --output=jsonpath='{.spec.ports[0].nodePort}')
+        - nodePort3=$(kubectl get service cat-svce --output=jsonpath='{.spec.ports[0].nodePort}')
         - nodePort2=$(kubectl get svc frontend --output=jsonpath='{.spec.ports[0].nodePort}')
         - kubectl describe deployment catalogue-service-deployment
         - kubectl describe service cat-svce
@@ -89,14 +90,10 @@ jobs:
         - echo $nodePort $minikubeIP $clusterIP
         - curl http://${minikubeIP}:${nodePort2}/ | echo
         - curl http://${minikubeIP}:${nodePort}/search | jq '.'
+        - curl http://${minikubeIP}:${nodePort3}/search | jq '.'
 
 
-# create versus apply?
-#kubectl create -f kubernetes/micro-service.yaml
-#kubectl create -f kubernetes/rev-proxy.yaml
-
-
-# minikube service cat-k8s-svce --url
+# minikube service cat-svce --url
 
 # Make sure created pod is scheduled and running.
 #- JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl -n default get pods -lapp=travis-example -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1;echo "waiting for travis-example deployment to be available"; kubectl get pods -n default; done

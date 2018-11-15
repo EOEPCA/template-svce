@@ -6,15 +6,17 @@ kind: Service
 metadata:
   name: cat-svce  # DNS name?
 spec:
-  selector:
-    app: catalogue-service
-    tier: backend
+  type: NodePort  # TODO
+  # selector:
+  #   app: catalogue-service
+  #   tier: backend
   ports:
-  - protocol: "TCP"
+  - protocol: TCP
     port: 8080
     targetPort: 7000
     name: http
-  type: NodePort  # TODO
+
+
 
 ---
 apiVersion: apps/v1
