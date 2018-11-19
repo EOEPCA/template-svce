@@ -16,14 +16,13 @@ jobs:
         #  - ls -l build/libs
         # TODO - this runs even if gradle fails
         - docker build -t eoepca/catalogue-service .
+        #  - docker images
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker tag eoepca/catalogue-service $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER
 
       deploy:
-        provider: script
-        script:
-          #  - docker images
-          - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          - docker tag eoepca/catalogue-service $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER
-          - docker push $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER   # defaults to docker hub
+        - provider: script
+          script: docker push $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER   # defaults to docker hub
       
     - stage: smoke and acceptance test
       install: skip  # without this there's a git clone and gradlew assemble executed! 
