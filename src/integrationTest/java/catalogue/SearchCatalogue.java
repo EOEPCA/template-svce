@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -60,16 +61,16 @@ public class SearchCatalogue {
 
     @Test
     @DisplayName("No Op Test to test Gradle logging")
+    @Disabled
     public void noopTest() {
         System.out.println("No-Op test to stdout");
     }
 
-
     @Test
     @DisplayName("Always Fail Test to test Gradle logging")
+    @Disabled
     public void failingTest() {
         System.out.println("Failing test to stdout");
         fail("I've failed!");
     }
-
 }

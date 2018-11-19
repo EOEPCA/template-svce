@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   #creationTimestamp: 2016-02-18T19:14:38Z
   name: nginx-config
-  namespace: default
+  namespace: eo-services
 data:
   # example of a complex property defined using --from-file
   nginx.conf: |-
@@ -36,6 +36,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
+  namespace: eo-services
 spec:
   selector:
     app: catalogue-service
@@ -52,6 +53,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: eo-services
 spec:
   selector:
     matchLabels:

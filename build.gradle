@@ -51,6 +51,9 @@ dependencies {
 
     compile("io.javalin:javalin:2.4.0")
 
+    // Used to create 
+    compile "io.kubernetes:client-java:3.0.0"
+
     // Junit 5
     testCompile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_ver")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_ver")

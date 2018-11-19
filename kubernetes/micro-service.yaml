@@ -5,6 +5,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: cat-svce  # DNS name?
+  namespace: eo-services
 spec:
   type: NodePort  # TODO
   selector: # matches to the pod template spec labels - associates the service with the deployment
@@ -21,6 +22,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: catalogue-service-deployment
+  namespace: eo-services
 spec:
   selector:
     matchLabels: # matches to the pod template spec?
