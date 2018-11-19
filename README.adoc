@@ -17,6 +17,13 @@ integration test source code and test libraries (Junit 5).
 Note that the new source set also creates keyword dependencies for `integrationTestCompile`, `integrationTestRuntime`
 to allow integration test specific library dependencies in `build.gradle`.
 
+Further custom source sets for other test types such as smoke tests, security tests, performance tests, etc. can be created and
+executed separately.
+
+- `./gradlew build` runs only the unit tests
+- `./gradlew integrationTest` runs only the integration tests (it compiles all source code  beforehand).  It does not package or deploy a build.
+This is assumed to have been done in a prior build pipeline step.
+
 === Test output
 
 Gradle creates separate output directory structures for the test source sets.
@@ -30,11 +37,9 @@ The HTML formatted reports are placed here:
 - `build/reports/tests/test`
 - `build/reports/tests/integrationTest`
 
-Further custom source sets for other test types such as smoke tests, security tests, performance tests, etc. can be created and
-executed separately.
+These files can be uploaded to an off-Travis location for viewing, aggregation, etc.
 
-- `./gradlew build` runs only the unit tests
-- `./gradlew integrationTest` runs only the integration tests (it compiles all source code  beforehand).  It does not package or deploy a build.
-This is assumed to have been done in a prior build pipeline step.
+As well as file based output `testLogging` at the test method level for failed and passed tests has been configured.
+This output appears on the Travis console.
 
 
