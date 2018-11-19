@@ -3,3 +3,38 @@
 - Javalin framework
 - Log4j2 + YAML
 - Junit 5
+
+== Gradle and Integration Tests
+
+Details on adding custom integration/acceptance tests are at:
+
+https://docs.gradle.org/current/javadoc/ see the https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/Test.html
+
+. Create a custom source set (directory structure) to hold the integration test source code separate from unit tests.
+. Create a custom `integrationTest` task and set up its classpath path and source code paths to include the
+integration test source code and test libraries (Junit 5).
+
+Note that the new source set also creates keyword dependencies for `integrationTestCompile`, `integrationTestRuntime`
+to allow integration test specific library dependencies in `build.gradle`.
+
+=== Test output
+
+Gradle creates separate output directory structures for the test source sets.
+
+The raw Junit XML is placed here:
+
+- `build/test-results/test`
+- `build/test-results/integrationTest`
+
+The HTML formatted reports are placed here:
+- `build/reports/tests/test`
+- `build/reports/tests/integrationTest`
+
+Further custom source sets for other test types such as smoke tests, security tests, performance tests, etc. can be created and
+executed separately.
+
+- `./gradlew build` runs only the unit tests
+- `./gradlew integrationTest` runs only the integration tests (it compiles all source code  beforehand).  It does not package or deploy a build.
+This is assumed to have been done in a prior build pipeline step.
+
+

@@ -44,7 +44,8 @@ jobs:
 
       if: branch = master # depends on release stage so this should be redundant
 
-      install: skip
+      # Need to install the JDK to build the Java Integration Tests
+      jdk: openjdk10
 
       # Minikube installation taken from: https://github.com/LiliC/travis-minikube/blob/minikube-30-kube-1.12/.travis.yml
 
@@ -56,6 +57,7 @@ jobs:
         - K8S_VER=v1.12.0
 
       before_script:
+        # Install minikube and kubectl
         # Make root mounted as rshared to fix kube-dns issues.
         - sudo mount --make-rshared /
         - echo "Installing minikube and kubectl version $K8S_VER"
@@ -70,8 +72,15 @@ jobs:
 
       script:
         - kubectl apply -f kubernetes/micro-service.yaml
-        - kubectl apply -f kubernetes/rev-proxy.yaml        
+        - kubectl apply -f kubernetes/rev-proxy.yaml
+
+        # wait for k8S and pods to start-up
         - sleep 60
+
+        # Various debug statements
+
+        # View cluster (kubectl) config in ~/.kube/config
+        - kubectl config view
         - kubectl get nodes
         - kubectl get pods --all-namespaces
         - kubectl get deployments catalogue-service-deployment
@@ -81,19 +90,24 @@ jobs:
         #- kubectl expose deployment catalogue-service-deployment --name=cat-svce2 --port=8083 --target-port=7000 --type=NodePort
         #- kubectl get svc cat-svce
         - kubectl get service cat-svce -o json        
-        - nodePort=$(kubectl get service cat-svce --output=jsonpath='{.spec.ports[0].nodePort}')
-        - nodePort2=$(kubectl get svc frontend --output=jsonpath='{.spec.ports[0].nodePort}')
+        - catSvcNodePort=$(kubectl get service cat-svce --output=jsonpath='{.spec.ports[0].nodePort}')
+        - revProxyNodePort=$(kubectl get svc frontend --output=jsonpath='{.spec.ports[0].nodePort}')
         - kubectl describe deployment catalogue-service-deployment
         - kubectl describe service cat-svce
         - kubectl describe service frontend
+
+        # Test connectivity with the services
         - minikubeIP=$(minikube ip)  # local host machine's minikube VM IP        
         - clusterIP=$(kubectl get svc cat-svce -o json | jq -r '.spec.clusterIP')
         - echo $nodePort $minikubeIP $clusterIP
         #- curl -s http://${minikubeIP}:${nodePort2}/
-        - curl http://${minikubeIP}:${nodePort2}/search | jq '.'
-        - curl http://${minikubeIP}:${nodePort}/search | jq '.'
-        - curl -si http://${minikubeIP}:${nodePort2}/search
-        - curl -si http://${minikubeIP}:${nodePort}/search
+        - curl http://${minikubeIP}:${revProxyNodePort}/search | jq '.'
+        - curl http://${minikubeIP}:${catSvcNodePort}/search | jq '.'
+        - curl -si http://${minikubeIP}:${revProxyNodePort}/search
+        - curl -si http://${minikubeIP}:${catSvcNodePort}/search
+        - export SEARCH_SERVICE_HOST=${minikubeIP}
+        - export SEARCH_SERVICE_PORT=${revProxyNodePort}
+        - ./gradlew integrationTest
         - kubectl logs deployment/frontend --all-containers=true
 
 # Make sure created pod is scheduled and running.

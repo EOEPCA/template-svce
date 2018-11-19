@@ -12,7 +12,7 @@ public class CatalogueService {
 
         app.get("/search", ctx -> {
           Output out = new Output();
-          out.result = "search results...";
+          out.result = "search results";
           ctx.json(out);
         } );
     }

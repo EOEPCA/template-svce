@@ -15,6 +15,24 @@ ext.junit_platform_ver = "1.1.0"
 ext.junit_jupiter_ver = "5.1.0"
 ext.log4j2_ver = "2.10.0"
 
+
+sourceSets {
+    integrationTest {
+        compileClasspath += main.output
+        compileClasspath += sourceSets["test"].compileClasspath
+        runtimeClasspath += main.output
+        runtimeClasspath += sourceSets["test"].runtimeClasspath
+    }
+}
+
+task integrationTest(type: Test) {
+    group = "verification"
+    // Runs tests from src/integrationTest
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    useJUnitPlatform()
+}
+
 dependencies {
 
     // Log4j2 + Jackson for YAML config support and SLF4J adapter
@@ -30,6 +48,9 @@ dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-api:$junit_jupiter_ver")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_ver")
     testRuntime("org.junit.platform:junit-platform-launcher:$junit_platform_ver")
+    
+    // Integration Test Dependencies
+    integrationTestCompile("com.squareup.okhttp3:okhttp:3.12.0")
 }
 
 shadowJar {
@@ -40,9 +61,23 @@ shadowJar {
 
 test {
     useJUnitPlatform()
-//    testLogging {
-//        events "passed", "skipped", "failed"
-//    }
+    
+    // See https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.logging.TestLoggingContainer.html
+    testLogging {
+        // set options for log level LIFECYCLE
+        events "failed"
+        exceptionFormat "short"
+
+        // set options for log level DEBUG
+//        debug {
+//            events "started", "skipped", "failed"
+//            exceptionFormat "full"
+//        }
+
+        // remove standard output/error logging from --info builds
+        // by assigning only 'failed' and 'skipped' events
+        info.events = ["failed", "skipped"]
+    }
 }
 
 task wrapper(type: Wrapper) {
