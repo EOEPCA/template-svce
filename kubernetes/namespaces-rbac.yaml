@@ -1,0 +1,98 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: EO User Compute
+  labels:
+    name: EO-User-Compute
+
+---
+
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: EO Services
+  labels:
+    name: EO-Services
+
+---
+
+# Namespaces can have Network Policies 
+# https://github.com/ahmetb/kubernetes-network-policy-recipes
+
+# Article on cross namespace comms and isolation
+# https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-organizing-with-namespaces?hl=no
+
+# Example based on https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/
+
+
+# Roles defined for the "EO User Compute" K8S namespace
+
+# Controls access to the various K8S services (APIs)
+
+
+# A simple user should be able to list pods and deployments and execute them e.g. as batch jobs
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  namespace: EO User Compute
+  name: eo-basic-user
+rules:
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["pods"]              # does this need deployments?
+  verbs: ["get", "list", "watch"]  # does this need exec?
+
+---
+
+# A power user should be able to create, delete pods and deployments within this namespace.  However, this could apply to other users pods.
+# Does this imply each "power user" or organisation gets their own namespace?
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  namespace: EO User Compute
+  name: eo-power-user
+rules:
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["deployments", "replicasets", "pods"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"] # You can also use ["*"]
+
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: deployment-manager-binding
+  namespace: EO User Compute
+subjects:
+- kind: User
+  name: Wile.E.Coyote
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: eo-power-user
+  apiGroup: ""
+
+---  
+
+# Build Launcher Service Account
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: bob-the-builder
+automountServiceAccountToken: false
+
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: bob-the-builder-binding
+  namespace: EO User Compute
+subjects:
+- kind: ServiceAccount  # N.B.
+  name: bob-the-builder
+  apiGroup: ""
+roleRef:
+  kind: Role
+  name: eo-power-user
+  apiGroup: ""
+
