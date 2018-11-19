@@ -1,18 +1,18 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: EO User Compute
+  name: eo-user-compute  # valid DNS names lowercase, alphanumerics and hyphens
   labels:
-    name: EO-User-Compute
+    name: eo-user-compute
 
 ---
 
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: EO Services
+  name: eo-services
   labels:
-    name: EO-Services
+    name: eo-services
 
 ---
 
@@ -34,7 +34,7 @@ metadata:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: EO User Compute
+  namespace: eo-user-compute
   name: eo-basic-user
 rules:
 - apiGroups: ["", "extensions", "apps"]
@@ -48,7 +48,7 @@ rules:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: EO User Compute
+  namespace: eo-user-compute
   name: eo-power-user
 rules:
 - apiGroups: ["", "extensions", "apps"]
@@ -61,7 +61,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: deployment-manager-binding
-  namespace: EO User Compute
+  namespace: eo-user-compute
 subjects:
 - kind: User
   name: Wile.E.Coyote
@@ -86,7 +86,7 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: bob-the-builder-binding
-  namespace: EO User Compute
+  namespace: eo-user-compute
 subjects:
 - kind: ServiceAccount  # N.B.
   name: bob-the-builder
