@@ -57,4 +57,19 @@ public class SearchCatalogue {
 
         assertEquals("search results", out.result);
     }
+
+    @Test
+    @DisplayName("No Op Test to test Gradle logging")
+    public void noopTest() {
+        System.out.println("No-Op test to stdout");
+    }
+
+
+    @Test
+    @DisplayName("Always Fail Test to test Gradle logging")
+    public void failingTest() {
+        System.out.println("Failing test to stdout");
+        fail("I've failed!");
+    }
+
 }

@@ -31,6 +31,13 @@ task integrationTest(type: Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     useJUnitPlatform()
+    
+    testLogging {
+        events "FAILED", "PASSED"
+        exceptionFormat "short"
+        maxGranularity = 3   // test method logging
+        showStandardStreams = true
+    }
 }
 
 dependencies {
@@ -59,24 +66,16 @@ shadowJar {
     version = null
 }
 
-test {
+test {  // for unit test config
     useJUnitPlatform()
     
     // See https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.logging.TestLoggingContainer.html
+    // events values are here: https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/logging/TestLogEvent.html
     testLogging {
-        // set options for log level LIFECYCLE
-        events "failed"
+        events "FAILED", "PASSED"
         exceptionFormat "short"
-
-        // set options for log level DEBUG
-//        debug {
-//            events "started", "skipped", "failed"
-//            exceptionFormat "full"
-//        }
-
-        // remove standard output/error logging from --info builds
-        // by assigning only 'failed' and 'skipped' events
-        info.events = ["failed", "skipped"]
+        maxGranularity = 3   // test method logging
+        showStandardStreams = true
     }
 }
 
