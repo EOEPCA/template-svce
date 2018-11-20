@@ -64,7 +64,7 @@ public class CatalogueService {
 
 
     public static void spawnBatchJob(Context ctx) {
-
+        logger.debug(">>>>> SPAWNING JOB");
 
         try {
 
@@ -75,7 +75,7 @@ public class CatalogueService {
 
         } catch (IOException e) {
             logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
-            ctx.status(500);
+            ctx.status(599);
         }
     }
 
