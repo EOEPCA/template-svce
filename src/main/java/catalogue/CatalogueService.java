@@ -13,8 +13,14 @@ public class CatalogueService {
     public static void main(String[] args) {
         Javalin app = Javalin.create().start(7000);
 
-        logger.debug("Database credentials: username = {}, password = {}", System.getenv("DB_USERNAME").toUpperCase(), System.getenv("DB_PASSWORD"));
-        
+        String db_user = System.getenv("DB_USERNAME");
+        String db_password = System.getenv("DB_PASSWORD");
+
+
+        if (db_user != null & db_password != null)
+            logger.debug("Database credentials: username = {}, password = {}", db_user.toUpperCase(), db_password.toUpperCase());
+        else
+            logger.error("Database credentials missing: username = {}, password = {}", db_user, db_password);
 
         app.get("/ping", ctx -> ctx.result("Hello World "));
 
