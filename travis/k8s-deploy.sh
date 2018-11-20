@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # fail fast settings from https://dougrichardson.org/2018/08/03/fail-fast-bash-scripting.html
-set -euo pipefail
+set -euov pipefail
 # Not supported in travis (xenial)
 # shopt -s inherit_errexit
 
@@ -55,3 +55,4 @@ echo Running integration tests
 ./gradlew integrationTest
 
 kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
+kubectl describe job --namespace=eo-user-compute pi

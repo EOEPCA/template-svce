@@ -5,12 +5,13 @@ import io.javalin.Javalin;
 import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.apis.BatchV1Api;
-import io.kubernetes.client.models.V1Job;
+import io.kubernetes.client.models.*;
 import io.kubernetes.client.util.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class CatalogueService {
@@ -67,8 +68,9 @@ public class CatalogueService {
 
         try {
 
-            V1Job job = launchBatch(null, "eo-user-compute");
-            ctx.json(job);
+            V1Job job = defineJob();
+            V1Job jobResult = launchBatch(job, "eo-user-compute");
+            ctx.json(jobResult);
 
         } catch (IOException e) {
             ctx.status(500);
@@ -109,10 +111,32 @@ public class CatalogueService {
 
     public static V1Job defineJob() {
         V1Job job = new V1Job();
+        V1ObjectMeta metadata = new V1ObjectMeta();
+        V1JobSpec jobSpec = new V1JobSpec();
+        V1PodTemplateSpec template = new V1PodTemplateSpec();
+        V1PodSpec podSpec = new V1PodSpec();
+        V1Container container = new V1Container();
+        List<V1Container> containers = List.of(container);
+
+        metadata.name("pi");
+        metadata.namespace("eo-user-compute");
 
         job.apiVersion("batch/v1");
         job.kind("Job");
+        job.metadata(metadata);
 
+        job.spec(jobSpec);
+        jobSpec.template(template);
+        jobSpec.setBackoffLimit(4);
+
+
+        template.spec(podSpec);
+        podSpec.containers(containers);
+        podSpec.setRestartPolicy("Never");
+
+        container.name("pi");
+        container.image("perl");
+        container.command(List.of("perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"));
 
         return job;
     }

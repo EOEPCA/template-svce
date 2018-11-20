@@ -1,6 +1,7 @@
 package catalogue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.kubernetes.client.models.V1Job;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -58,6 +59,27 @@ public class SearchCatalogue {
 
         assertEquals("search results", out.result);
     }
+
+    @Test
+    @DisplayName("Spawns a batch job")
+    public void spawnJob() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+
+        Request request = new Request.Builder()
+                .url(endpointUrl+"/process")
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        V1Job out = mapper.readValue(response.body().string(), V1Job.class);
+
+        System.out.println(out);
+        //assertEquals("search results", out.result);
+    }
+
 
     @Test
     @DisplayName("No Op Test to test Gradle logging")
