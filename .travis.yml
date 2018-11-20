@@ -75,6 +75,10 @@ jobs:
         - kubectl cluster-info        
 
       script:
+        #-----------------------------------------------------------------------------------------------------------------
+        # Create the K8S environment
+        # Database username and password are from Travis environment variables..for simplicity.  Travis secretes or Helm templates may be better.
+        - kubectl create secret generic db-user-pass --from-literal=db_username=$DB_USER --from-literal=db_password=$DB_PASSWORD
         - kubectl apply -f kubernetes/namespaces-rbac.yaml
         - kubectl apply -f kubernetes/micro-service.yaml
         - kubectl apply -f kubernetes/rev-proxy.yaml
@@ -104,9 +108,8 @@ jobs:
 
         # Test connectivity with the services
         - minikubeIP=$(minikube ip)  # local host machine's minikube VM IP        
-        - clusterIP=$(kubectl get svc cat-svce -o json | jq -r '.spec.clusterIP')
+        - clusterIP=$(kubectl get svc --namespace=eo-services cat-svce -o json | jq -r '.spec.clusterIP')
         - echo $nodePort $minikubeIP $clusterIP
-        #- curl -s http://${minikubeIP}:${nodePort2}/
         - curl http://${minikubeIP}:${revProxyNodePort}/search | jq '.'
         - curl http://${minikubeIP}:${catSvcNodePort}/search | jq '.'
         - curl -si http://${minikubeIP}:${revProxyNodePort}/search
@@ -114,6 +117,7 @@ jobs:
         - export SEARCH_SERVICE_HOST=${minikubeIP}
         - export SEARCH_SERVICE_PORT=${revProxyNodePort}
         - ./gradlew integrationTest
+
         - kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
 
 # Make sure created pod is scheduled and running.

@@ -31,7 +31,7 @@ task integrationTest(type: Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     useJUnitPlatform()
-    
+
     testLogging {
         events "FAILED", "PASSED"
         exceptionFormat "short"
@@ -83,6 +83,6 @@ test {  // for unit test config
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.10.1'
+    gradleVersion = '4.10.2'
 }
 

@@ -36,11 +36,18 @@ spec:
         tier: service
     spec:
       containers:
-      # - name: nginx
-      #   image: nginx:1.7.9
-      #   ports:
-      #   - containerPort: 80
       - name: cat-svce
         image: eoepcaci/catalogue-service:latest # may not always want latest
         ports:
         - containerPort: 7000
+        env:
+          - name: DB_USERNAME  # container specific environment variable name
+            valueFrom:
+              secretKeyRef:
+                name: db-user-pass # K8S secret name
+                key: db_username  # key within the secret
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-user-pass
+                key: db_password        
