@@ -42,4 +42,9 @@ These files can be uploaded to an off-Travis location for viewing, aggregation, 
 As well as file based output `testLogging` at the test method level for failed and passed tests has been configured.
 This output appears on the Travis console.
 
+=== Upgrading Gradle Wrapper
+
+Change the version number in the `build.gradle` wrapper task then run:
+
+`./gradlew wrapper --gradle-version=4.10.2 --distribution-type=bin`
 

@@ -2,7 +2,8 @@
 
 # fail fast settings from https://dougrichardson.org/2018/08/03/fail-fast-bash-scripting.html
 set -euo pipefail
-shopt -s inherit_errexit
+# Not supported in travis (xenial)
+# shopt -s inherit_errexit
 
 
 # Create the K8S environment

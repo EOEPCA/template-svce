@@ -13,7 +13,7 @@ public class CatalogueService {
     public static void main(String[] args) {
         Javalin app = Javalin.create().start(7000);
 
-        logger.debug("Database credentials: username = {}, password = {}", System.getenv("DB_USERNAME"), System.getenv("DB_PASSWORD"));
+        logger.debug("Database credentials: username = {}, password = {}", System.getenv("DB_USERNAME").toUpperCase(), System.getenv("DB_PASSWORD"));
         
 
         app.get("/ping", ctx -> ctx.result("Hello World "));
