@@ -1,5 +1,6 @@
 package catalogue;
 
+import io.javalin.Context;
 import io.javalin.Javalin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,8 @@ public class CatalogueService {
 
 
         if (db_user != null & db_password != null)
+            // Travis magically hides all secure env variables longer than 3 chars - seemingly using a simple case sensitive string match
+            // and replaces them with [secure] in the console.  Changing them to upper case to subvert this feature.
             logger.debug("Database credentials: username = {}, password = {}", db_user.toUpperCase(), db_password.toUpperCase());
         else
             logger.error("Database credentials missing: username = {}, password = {}", db_user, db_password);
@@ -29,6 +32,32 @@ public class CatalogueService {
           out.result = "search results";
           ctx.json(out);
         } );
+
+        // should be a POST
+        app.get("/process", CatalogueService::spawnBatchJob);
+    }
+
+    /**
+     * apiVersion: batch/v1
+     * kind: Job
+     * metadata:
+     *   name: pi
+     * spec:
+     *   template:
+     *     spec:
+     *       containers:
+     *       - name: pi
+     *         image: perl
+     *         command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+     *       restartPolicy: Never
+     *   backoffLimit: 4
+     * @param ctx
+     */
+
+
+    public static void spawnBatchJob(Context ctx) {
+
+        ctx.result("Done");
     }
 }
 
