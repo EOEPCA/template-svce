@@ -37,16 +37,21 @@ kubectl describe deployment --namespace=eo-services catalogue-service-deployment
 kubectl describe service --namespace=eo-services cat-svce
 kubectl describe service --namespace=eo-services frontend
 
-# Test connectivity with the services
-minikubeIP=$(minikube ip)  # local host machine's minikube VM IP
+
+echo Testing connectivity with the services
+# local host machine's minikube VM IP
+minikubeIP=$(minikube ip)
 clusterIP=$(kubectl get svc --namespace=eo-services cat-svce -o json | jq -r '.spec.clusterIP')
-echo $nodePort $minikubeIP $clusterIP
+echo $minikubeIP $clusterIP
+
 curl http://${minikubeIP}:${revProxyNodePort}/search | jq '.'
 curl http://${minikubeIP}:${catSvcNodePort}/search | jq '.'
 curl -si http://${minikubeIP}:${revProxyNodePort}/search
 curl -si http://${minikubeIP}:${catSvcNodePort}/search
 export SEARCH_SERVICE_HOST=${minikubeIP}
 export SEARCH_SERVICE_PORT=${revProxyNodePort}
+
+echo Running integration tests
 ./gradlew integrationTest
 
 kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
