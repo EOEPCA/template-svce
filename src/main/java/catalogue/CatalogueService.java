@@ -69,11 +69,12 @@ public class CatalogueService {
         try {
 
             V1Job job = defineJob();
+            logger.debug(">>>>> JOB DEFINED");
             V1Job jobResult = launchBatch(job, "eo-user-compute");
             ctx.json(jobResult);
 
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
             ctx.status(500);
         }
     }
@@ -105,6 +106,7 @@ public class CatalogueService {
             return result;
         } catch (ApiException e) {  // TODO improve this
             logger.error(e.getResponseBody());
+            logger.error(">>>>> Code {} Message {}", e.getCode(), e.getMessage());
             throw new RuntimeException(e);
         }
     }
