@@ -55,6 +55,8 @@ echo Running integration tests
 ./gradlew integrationTest
 
 kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
-kubectl describe job --namespace=eo-user-compute pi
+kubectl logs --namespace=eo-services deployment/catalogue-service-deployment --all-containers=true
+kubectl describe jobs/pi --namespace=eo-user-compute
+#kubectl describe job --namespace=eo-user-compute pi
 
 echo $?

@@ -73,6 +73,7 @@ public class CatalogueService {
             ctx.json(jobResult);
 
         } catch (IOException e) {
+            logger.error(e.getMessage());
             ctx.status(500);
         }
     }
@@ -103,7 +104,7 @@ public class CatalogueService {
             V1Job result = apiInstance.createNamespacedJob(namespace, job, pretty);
             return result;
         } catch (ApiException e) {  // TODO improve this
-            System.err.println("Exception when calling BatchV1Api#createNamespacedJob");
+            logger.error(e.getResponseBody());
             throw new RuntimeException(e);
         }
     }

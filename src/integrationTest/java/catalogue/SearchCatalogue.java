@@ -52,6 +52,7 @@ public class SearchCatalogue {
             .build();
 
         Response response = client.newCall(request).execute();
+        assertEquals(200, response.code());
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -71,6 +72,7 @@ public class SearchCatalogue {
                 .build();
 
         Response response = client.newCall(request).execute();
+        assertEquals(200, response.code());
 
 //        ObjectMapper mapper = new ObjectMapper();
 //
