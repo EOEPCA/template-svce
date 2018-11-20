@@ -56,3 +56,5 @@ echo Running integration tests
 
 kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
 kubectl describe job --namespace=eo-user-compute pi
+
+echo $?

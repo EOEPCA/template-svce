@@ -72,11 +72,11 @@ public class SearchCatalogue {
 
         Response response = client.newCall(request).execute();
 
-        ObjectMapper mapper = new ObjectMapper();
-
-        V1Job out = mapper.readValue(response.body().string(), V1Job.class);
-
-        System.out.println(out);
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        V1Job out = mapper.readValue(response.body().string(), V1Job.class);
+//
+//        System.out.println(out);
         //assertEquals("search results", out.result);
     }
 
