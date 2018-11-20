@@ -66,17 +66,18 @@ public class CatalogueService {
     public static void spawnBatchJob(Context ctx) {
         logger.debug(">>>>> SPAWNING JOB");
 
-        try {
+//        try {
 
             V1Job job = defineJob();
             logger.debug(">>>>> JOB DEFINED");
-            V1Job jobResult = launchBatch(job, "eo-user-compute");
-            ctx.json(jobResult);
+            //V1Job jobResult = launchBatch(job, "eo-user-compute");
+            //ctx.json(jobResult);
+            ctx.result("Okay");
 
-        } catch (IOException e) {
-            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
-            ctx.status(599);
-        }
+//        } catch (IOException e) {
+//            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
+//            ctx.status(500);
+//        }
     }
 
 
