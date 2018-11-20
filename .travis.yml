@@ -91,6 +91,7 @@ jobs:
         # View cluster (kubectl) config in ~/.kube/config
         - kubectl config view
         - kubectl get nodes
+        - kubectl get secret db-user-pass -o yaml
         - kubectl get namespaces
         - kubectl get pods --all-namespaces
         - kubectl get deployments --namespace=eo-services catalogue-service-deployment
