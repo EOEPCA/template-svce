@@ -29,13 +29,13 @@ spec:
       app: catalogue-service
       tier: service
   replicas: 1 # tells deployment to run 1 pod matching the template
-  serviceAccountName: bob-the-builder
   template:
     metadata:
       labels:
         app: catalogue-service
         tier: service
     spec:
+      serviceAccountName: bob-the-builder
       containers:
       - name: cat-svce
         image: eoepcaci/catalogue-service:latest # may not always want latest
