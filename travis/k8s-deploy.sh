@@ -18,40 +18,53 @@ sleep 60
 
 # Various debug statements
 
-# View cluster (kubectl) config in ~/.kube/config
-kubectl config view
-kubectl get nodes
-kubectl get secret db-user-pass -o yaml --namespace=eo-services
-kubectl get namespaces
-kubectl get pods --all-namespaces
-kubectl get deployments --namespace=eo-services catalogue-service-deployment
-#- kubectl logs -lapp=catalogue-service --all-containers=true
-kubectl logs --namespace=eo-services deployment/catalogue-service-deployment --all-containers=true
-kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
-#- kubectl expose deployment catalogue-service-deployment --name=cat-svce2 --port=8083 --target-port=7000 --type=NodePort
-#- kubectl get svc cat-svce
-kubectl get service --namespace=eo-services cat-svce -o json
-catSvcNodePort=$(kubectl get service --namespace=eo-services cat-svce --output=jsonpath='{.spec.ports[0].nodePort}')
-revProxyNodePort=$(kubectl get svc --namespace=eo-services frontend --output=jsonpath='{.spec.ports[0].nodePort}')
-kubectl describe deployment --namespace=eo-services catalogue-service-deployment
-kubectl describe service --namespace=eo-services cat-svce
-kubectl describe service --namespace=eo-services frontend
+debug=false
+
+if ($debug == "true"); then
+
+    # View cluster (kubectl) config in ~/.kube/config
+    kubectl config view
+    kubectl get nodes
+    kubectl get secret db-user-pass -o yaml --namespace=eo-services
+    kubectl get namespaces
+    kubectl get pods --all-namespaces
+    kubectl get deployments --namespace=eo-services catalogue-service-deployment
+    #- kubectl logs -lapp=catalogue-service --all-containers=true
+    kubectl logs --namespace=eo-services deployment/catalogue-service-deployment --all-containers=true
+    kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
+    #- kubectl expose deployment catalogue-service-deployment --name=cat-svce2 --port=8083 --target-port=7000 --type=NodePort
+    #- kubectl get svc cat-svce
+    kubectl get service --namespace=eo-services cat-svce -o json
+
+    kubectl describe deployment --namespace=eo-services catalogue-service-deployment
+    kubectl describe service --namespace=eo-services cat-svce
+    kubectl describe service --namespace=eo-services frontend
+    clusterIP=$(kubectl get svc --namespace=eo-services cat-svce -o json | jq -r '.spec.clusterIP')
+    echo Cluster IP of cat-svce is $clusterIP
+
+fi
+
 
 
 echo Testing connectivity with the services
 # local host machine's minikube VM IP
 minikubeIP=$(minikube ip)
-clusterIP=$(kubectl get svc --namespace=eo-services cat-svce -o json | jq -r '.spec.clusterIP')
-echo $minikubeIP $clusterIP
+catSvcNodePort=$(kubectl get service --namespace=eo-services cat-svce --output=jsonpath='{.spec.ports[0].nodePort}')
+revProxyNodePort=$(kubectl get svc --namespace=eo-services frontend --output=jsonpath='{.spec.ports[0].nodePort}')
 
-curl http://${minikubeIP}:${revProxyNodePort}/search | jq '.'
-curl http://${minikubeIP}:${catSvcNodePort}/search | jq '.'
-curl -si http://${minikubeIP}:${revProxyNodePort}/search
-curl -si http://${minikubeIP}:${catSvcNodePort}/search
-export SEARCH_SERVICE_HOST=${minikubeIP}
-export SEARCH_SERVICE_PORT=${revProxyNodePort}
+if ($debug == "true"); then
+    # Both the micro-service and reverse proxy are exposed as node ports for testing purposes
+    # curl echoes both ports to check connectivity.  The second set echoes the server headers should report nginx and javalin
+    curl http://${minikubeIP}:${revProxyNodePort}/search | jq '.'
+    curl http://${minikubeIP}:${catSvcNodePort}/search | jq '.'
+    curl -si http://${minikubeIP}:${revProxyNodePort}/search
+    curl -si http://${minikubeIP}:${catSvcNodePort}/search
+fi
 
 echo Running integration tests
+# Environment variables used by the Java integration tests if set
+export SEARCH_SERVICE_HOST=${minikubeIP}
+export SEARCH_SERVICE_PORT=${revProxyNodePort}
 ./gradlew integrationTest
 
 sleep 30
@@ -60,9 +73,6 @@ kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
 kubectl logs --namespace=eo-services deployment/catalogue-service-deployment --all-containers=true
 
 kubectl describe jobs/pi --namespace=eo-user-compute
-
-
-
 
 #kubectl describe job --namespace=eo-user-compute pi
 
