@@ -16,7 +16,7 @@ jobs:
           script: docker push $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER   # defaults to docker hub
       
     - stage: smoke and acceptance test
-      install: skip  # without this there's a git clone and gradlew assemble executed! 
+      install: skip  # without this there's a `git clone` and `gradlew assemble` executed! 
       script: travis/acceptanceTest.sh
       
     - stage: release

@@ -17,6 +17,14 @@ Configuration:
 
   Loggers:
     Root:
-      level: debug
+      level: info
+      AppenderRef:
+        - ref: DetailedConsole
+    catalogue.CatalogueService:
+      level: info
+      AppenderRef:
+        - ref: DetailedConsole
+    org.eclipse.jetty.util:
+      level: warn
       AppenderRef:
         - ref: DetailedConsole
