@@ -16,6 +16,9 @@ kubectl apply -f kubernetes/rev-proxy.yaml
 # wait for k8S and pods to start-up
 sleep 60
 
+# Make sure created pod is scheduled and running.
+#- JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl -n default get pods -lapp=travis-example -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1;echo "waiting for travis-example deployment to be available"; kubectl get pods -n default; done
+
 # Various debug statements
 
 debug=false
