@@ -20,7 +20,7 @@ public class CatalogueTest {
 
     @Test
     @DisplayName("Catalogue Service unit test")
-    @Disabled
+    //@Disabled
     public void alwaysFail() {
 
 
