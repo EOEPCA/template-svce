@@ -31,9 +31,10 @@ Configuration:
         AppenderRef:
           - ref: DetailedConsole
             level: info
+        additivity: false
       - name: io.javalin
         level: info
         AppenderRef:
-        - ref: DetailedConsole
-          level: info
-
+          - ref: DetailedConsole
+            level: info
+        additivity: false
