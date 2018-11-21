@@ -29,6 +29,7 @@ spec:
       app: catalogue-service
       tier: service
   replicas: 1 # tells deployment to run 1 pod matching the template
+  serviceAccountName: bob-the-builder
   template:
     metadata:
       labels:
@@ -50,4 +51,6 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: db-user-pass
-                key: db_password        
+                key: db_password
+
+   

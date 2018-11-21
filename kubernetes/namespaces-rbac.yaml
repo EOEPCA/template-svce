@@ -52,7 +52,7 @@ metadata:
   name: eo-power-user
 rules:
 - apiGroups: ["", "extensions", "apps"]
-  resources: ["deployments", "replicasets", "pods"]
+  resources: ["deployments", "replicasets", "pods", "jobs"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"] # You can also use ["*"]
 
 ---
