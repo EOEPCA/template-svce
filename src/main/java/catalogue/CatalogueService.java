@@ -45,22 +45,7 @@ public class CatalogueService {
         } );
 
         // should be a POST
-        app.get("/process", ctx -> {
-            logger.debug(">>>>> SPAWNING JOB");
-
-            //        try {
-            
-                        V1Job job = defineJob();
-                        logger.debug(">>>>> JOB DEFINED");
-                        //V1Job jobResult = launchBatch(job, "eo-user-compute");
-                        //ctx.json(jobResult);
-                        ctx.result("Okay here");
-            
-            //        } catch (IOException e) {
-            //            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
-            //            ctx.status(500);
-            //        }            
-        }); //CatalogueService::spawnBatchJob);
+        app.get("/process", CatalogueService::spawnBatchJob);
     }
 
     /**
@@ -84,18 +69,18 @@ public class CatalogueService {
     public static void spawnBatchJob(Context ctx) {
         logger.debug(">>>>> SPAWNING JOB");
 
-//        try {
+        try {
 
             V1Job job = defineJob();
             logger.debug(">>>>> JOB DEFINED");
-            //V1Job jobResult = launchBatch(job, "eo-user-compute");
-            //ctx.json(jobResult);
-            ctx.result("OK");
+            V1Job jobResult = launchBatch(job, "eo-user-compute");
+            ctx.json(jobResult);
+            //ctx.result("OK");
 
-//        } catch (IOException e) {
-//            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
-//            ctx.status(500);
-//        }
+        } catch (IOException e) {
+            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
+            ctx.status(500);
+        }
     }
 
 
