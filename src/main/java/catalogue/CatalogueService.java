@@ -60,7 +60,7 @@ public class CatalogueService {
             //            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
             //            ctx.status(500);
             //        }            
-        })//CatalogueService::spawnBatchJob);
+        }); //CatalogueService::spawnBatchJob);
     }
 
     /**
