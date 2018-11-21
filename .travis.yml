@@ -2,8 +2,6 @@ sudo: required
 language: java
 install: false #true
 
-
-
 services:
   - docker
 
@@ -61,7 +59,7 @@ jobs:
 notifications:
   email:
     recipients:
-      - paul.cox@telespazio.com
-      - richard.conway@telespazio.com
+      - a.person@acme.com
+      - a.n.other@acme.com
     on_success: never #never # default: change
     on_failure: never # default: always
