@@ -36,13 +36,31 @@ public class CatalogueService {
         app.get("/ping", ctx -> ctx.result("Hello World "));
 
         app.get("/search", ctx -> {
+
+          logger.debug("Searching catalogue...");
+
           Output out = new Output();
           out.result = "search results";
           ctx.json(out);
         } );
 
         // should be a POST
-        app.get("/process", CatalogueService::spawnBatchJob);
+        app.get("/process", ctx -> {
+            logger.debug(">>>>> SPAWNING JOB");
+
+            //        try {
+            
+                        V1Job job = defineJob();
+                        logger.debug(">>>>> JOB DEFINED");
+                        //V1Job jobResult = launchBatch(job, "eo-user-compute");
+                        //ctx.json(jobResult);
+                        ctx.result("Okay here");
+            
+            //        } catch (IOException e) {
+            //            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
+            //            ctx.status(500);
+            //        }            
+        })//CatalogueService::spawnBatchJob);
     }
 
     /**
