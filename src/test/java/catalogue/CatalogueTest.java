@@ -12,20 +12,15 @@ public class CatalogueTest {
     @DisplayName("Catalogue Service unit test")
     public void testCatalogue() {
 
-
         System.out.println("running unit test");
-
 
     }
 
     @Test
     @DisplayName("Catalogue Service unit test")
-    //@Disabled
+    @Disabled
     public void alwaysFail() {
 
-
         fail("Failed a test");
-
     }
-
 }
