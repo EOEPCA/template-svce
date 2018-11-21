@@ -72,6 +72,7 @@ public class SearchCatalogue {
                 .build();
 
         Response response = client.newCall(request).execute();
+        System.out.println(">>>>>> "+response.body().string());
         //assertEquals(200, response.code());
 
 //        ObjectMapper mapper = new ObjectMapper();

@@ -72,7 +72,7 @@ public class CatalogueService {
             logger.debug(">>>>> JOB DEFINED");
             //V1Job jobResult = launchBatch(job, "eo-user-compute");
             //ctx.json(jobResult);
-            ctx.result("Okay");
+            ctx.result("OK");
 
 //        } catch (IOException e) {
 //            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
