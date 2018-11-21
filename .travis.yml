@@ -19,23 +19,12 @@ jobs:
       
     - stage: smoke and acceptance test
       install: skip  # without this there's a git clone and gradlew assemble executed! 
-      script:
-        - docker run -d --rm -p 8080:7000 --name cat-svc $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER
-        - sleep 15  # wait for startup
-      #  - docker ps -a
-        - curl -s http://localhost:8080/search | jq '.'  # trivial smoke test
-      #  - docker logs cat-svc
+      script: travis/acceptanceTest.sh
       
     - stage: release
       if: branch = master
       install: skip
-      script:
-        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker pull $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER  # have to pull locally in order to tag as a release 
-        - docker tag $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
-        - docker push $DOCKER_USERNAME/catalogue-service:release_$TRAVIS_BUILD_NUMBER
-        - docker tag $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER $DOCKER_USERNAME/catalogue-service:latest
-        - docker push $DOCKER_USERNAME/catalogue-service:latest
+      script: travis/release.sh
     
     - stage: production
 
@@ -67,7 +56,7 @@ jobs:
         - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
         - kubectl cluster-info        
 
-      script: travis/k8s-deploy.sh #source travis/k8s-deploy.sh
+      script: travis/k8s-deploy.sh
 
 notifications:
   email:
