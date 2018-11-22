@@ -75,6 +75,8 @@ sleep 30
 kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
 kubectl logs --namespace=eo-services deployment/catalogue-service-deployment --all-containers=true
 
-kubectl describe jobs/pi --namespace=eo-services
+#kubectl describe jobs/pi --namespace=eo-services
+kubectl describe jobs --namespace=eo-services
+kubectl describe jobs --namespace=eo-user-compute
 
 #kubectl describe job --namespace=eo-user-compute pi

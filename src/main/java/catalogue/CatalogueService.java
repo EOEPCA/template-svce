@@ -20,7 +20,7 @@ public class CatalogueService {
     private static final Logger logger = LoggerFactory.getLogger(CatalogueService.class);
 
     // The namespace where the batch job will be executed
-    private static final String TARGET_NAMESPACE = "eo-services";
+    private static final String TARGET_NAMESPACE = "eo-user-compute"; //"eo-services";
 
     public static void main(String[] args) {
         Javalin app = Javalin.create().start(7000);
