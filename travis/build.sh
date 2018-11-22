@@ -9,8 +9,12 @@ set -euov pipefail
 ./gradlew build #--scan -s
 #ls -l build/libs
 
+buildTag=travis_${TRAVIS_BRANCH}_$TRAVIS_BUILD_NUMBER
+
 # Create a Docker image and tag it as 'travis_<build number>'
 docker build -t eoepca/catalogue-service .
-docker tag eoepca/catalogue-service $DOCKER_USERNAME/catalogue-service:travis_${TRAVIS_BRANCH}_$TRAVIS_BUILD_NUMBER
+docker tag eoepca/catalogue-service $DOCKER_USERNAME/catalogue-service:$buildTag
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+docker push $DOCKER_USERNAME/catalogue-service:$buildTag   # defaults to docker hub
