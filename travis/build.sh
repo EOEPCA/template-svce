@@ -11,6 +11,6 @@ set -euov pipefail
 
 # Create a Docker image and tag it as 'travis_<build number>'
 docker build -t eoepca/catalogue-service .
-docker tag eoepca/catalogue-service $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BUILD_NUMBER
+docker tag eoepca/catalogue-service $DOCKER_USERNAME/catalogue-service:travis_$TRAVIS_BRANCH_$TRAVIS_BUILD_NUMBER
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
