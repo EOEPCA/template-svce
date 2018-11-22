@@ -77,8 +77,8 @@ public class CatalogueService {
             ctx.json(jobResult);
             //ctx.result("OK");
 
-        } catch (IOException e) {
-            logger.error(">>>>>>> IOEXception cause {} ", e.getCause());
+        } catch (IOException | ApiException e) {
+            logger.error(">>>>>>> Batch Execution Exception cause {} {} ", e.getCause(), e.getMessage());
             ctx.status(500);
         }
     }
@@ -92,7 +92,7 @@ public class CatalogueService {
      * - The K8S API credentials to launch the job - in this case a service account
      */
 
-    public static V1Job launchBatch(V1Job job, String namespace) throws IOException {
+    public static V1Job launchBatch(V1Job job, String namespace) throws IOException, ApiException {
 
         // attempts to work out where the code is running.  If inside a cluster it will locate the
         // container's/pod's service account CA cert and service account token from their mount paths
@@ -111,7 +111,7 @@ public class CatalogueService {
         } catch (ApiException e) {  // TODO improve this
             logger.error(e.getResponseBody());
             logger.error(">>>>> Code {} Message {}", e.getCode(), e.getMessage());
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 
