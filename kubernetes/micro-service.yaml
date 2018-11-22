@@ -35,7 +35,7 @@ spec:
         app: catalogue-service
         tier: service
     spec:
-      serviceAccountName: bob-the-builder
+      #serviceAccountName: bob-the-builder
       containers:
       - name: cat-svce
         image: eoepcaci/catalogue-service:latest # may not always want latest
