@@ -106,8 +106,8 @@ metadata:
   namespace: eo-user-compute
   name: eo-power-user2
 rules:
-- apiGroups: ["", "extensions", "apps", "batch"]
-  resources: ["deployments", "replicasets", "pods", "jobs"]
+- apiGroups: ["batch"]
+  resources: ["jobs"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"] # You can also use ["*"]
 
 ---

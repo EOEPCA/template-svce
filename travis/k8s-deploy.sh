@@ -88,4 +88,6 @@ kubectl describe jobs        --namespace=eo-user-compute
 #kubectl describe jobs/pi --namespace=eo-user-compute
 #kubectl describe job pi   --namespace=eo-user-compute
 
+sleep 30
+
 kubectl logs --namespace=eo-user-compute job/pi --all-containers=true

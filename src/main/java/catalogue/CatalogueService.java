@@ -143,6 +143,7 @@ public class CatalogueService {
         template.spec(podSpec);
         podSpec.containers(containers);
         podSpec.setRestartPolicy("Never");
+        podSpec.automountServiceAccountToken(false);  // prevents access to the K8S API from inside the batch pod
 
         container.name("pi");
         container.image("perl");
