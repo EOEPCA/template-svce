@@ -65,7 +65,7 @@ apiVersion: v1
 metadata:
   name: bob-the-builder
   namespace: eo-services
-automountServiceAccountToken: false
+automountServiceAccountToken: true
 
 ---
 
