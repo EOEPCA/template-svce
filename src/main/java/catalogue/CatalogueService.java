@@ -126,7 +126,9 @@ public class CatalogueService {
         List<V1Container> containers = List.of(container);
 
         metadata.name("pi");
-        metadata.namespace("eo-user-compute");
+        //metadata.namespace("eo-user-compute");
+
+        metadata.namespace("eo-services");
 
         job.apiVersion("batch/v1");
         job.kind("Job");
