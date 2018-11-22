@@ -19,6 +19,9 @@ public class CatalogueService {
 
     private static final Logger logger = LoggerFactory.getLogger(CatalogueService.class);
 
+    // The namespace where the batch job will be executed
+    private static final String TARGET_NAMESPACE = "eo-services";
+
     public static void main(String[] args) {
         Javalin app = Javalin.create().start(7000);
 
@@ -73,7 +76,7 @@ public class CatalogueService {
 
             V1Job job = defineJob();
             logger.debug(">>>>> JOB DEFINED");
-            V1Job jobResult = launchBatch(job, "eo-user-compute");
+            V1Job jobResult = launchBatch(job, TARGET_NAMESPACE);
             ctx.json(jobResult);
             //ctx.result("OK");
 
@@ -126,9 +129,8 @@ public class CatalogueService {
         List<V1Container> containers = List.of(container);
 
         metadata.name("pi");
-        //metadata.namespace("eo-user-compute");
 
-        metadata.namespace("eo-services");
+        metadata.namespace(TARGET_NAMESPACE);
 
         job.apiVersion("batch/v1");
         job.kind("Job");
@@ -137,7 +139,6 @@ public class CatalogueService {
         job.spec(jobSpec);
         jobSpec.template(template);
         jobSpec.setBackoffLimit(4);
-
 
         template.spec(podSpec);
         podSpec.containers(containers);
