@@ -13,7 +13,7 @@ spec:
   # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#writing-portable-configuration
    #storageClassName: ???
   hostPath:  # volume type - dev/test only on minikube
-    path: /data
+    path: /eo-data
 
 ---
 
