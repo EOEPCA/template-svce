@@ -126,7 +126,12 @@ public class CatalogueService {
         V1PodTemplateSpec template = new V1PodTemplateSpec();
         V1PodSpec podSpec = new V1PodSpec();
         V1Container container = new V1Container();
+        V1VolumeMount mnt = new V1VolumeMount();
+        V1Volume vol = new V1Volume();
         List<V1Container> containers = List.of(container);
+        List<V1VolumeMount> mounts = List.of(mnt);
+        List<V1Volume> volumes = List.of(vol);
+        V1PersistentVolumeClaimVolumeSource pvc = new V1PersistentVolumeClaimVolumeSource();
 
         metadata.name("pi");
 
@@ -148,6 +153,17 @@ public class CatalogueService {
         container.name("pi");
         container.image("perl");
         container.command(List.of("perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"));
+        container.volumeMounts(mounts);
+
+        mnt.name("eo-data-volume");  // must match volume name
+        mnt.mountPath("/var/eo-data");
+
+        podSpec.volumes(volumes);
+
+        vol.name("eo-data-volume");
+        vol.persistentVolumeClaim(pvc);
+
+        pvc.claimName("pvc-sample-eo-data");  // must match the claim name defined in YAML
 
         return job;
     }

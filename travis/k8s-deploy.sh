@@ -94,9 +94,11 @@ if ($debug == "true"); then
     kubectl describe quota --namespace=eo-user-compute
 fi
 
+kubectl describe job pi   --namespace=eo-user-compute
+
 # Debug Persistent Volumes, PV Claims and Storage Classes
-describe pv
-describe pvc --namespace=eo-user-compute
+kubectl describe pv
+kubectl describe pvc --namespace=eo-user-compute
 kubectl get storageclass
 
 
