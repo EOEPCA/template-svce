@@ -91,4 +91,6 @@ kubectl describe jobs        --namespace=eo-user-compute
 
 sleep 30
 
+kubectl describe quota --namespace=eo-user-compute
+
 kubectl logs --namespace=eo-user-compute job/pi --all-containers=true
