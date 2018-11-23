@@ -13,6 +13,7 @@ kubectl apply -f kubernetes/quotas.yaml
 kubectl create secret generic db-user-pass --from-literal=db_username=$DB_USER --from-literal=db_password=$DB_PASSWORD --namespace=eo-services
 kubectl apply -f kubernetes/micro-service.yaml
 kubectl apply -f kubernetes/rev-proxy.yaml
+kubectl apply -f kubernetes/persistent-volumes.yaml
 
 # wait for k8S and pods to start-up
 sleep 60
@@ -71,26 +72,28 @@ export SEARCH_SERVICE_HOST=${minikubeIP}
 export SEARCH_SERVICE_PORT=${revProxyNodePort}
 ./gradlew integrationTest
 
-sleep 30
+sleep 60
 
 kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
 kubectl logs --namespace=eo-services deployment/catalogue-service-deployment --all-containers=true
 
-# Namespace: eo-services
-kubectl describe deployments --namespace=eo-services
-kubectl describe services    --namespace=eo-services
-kubectl describe jobs        --namespace=eo-services
+if ($debug == "true"); then
+    # Namespace: eo-services
+    kubectl describe deployments --namespace=eo-services
+    kubectl describe services    --namespace=eo-services
+    kubectl describe jobs        --namespace=eo-services
 
-# Namespace: eo-user-compute
-kubectl describe deployments --namespace=eo-user-compute
-kubectl describe services    --namespace=eo-user-compute
-kubectl describe jobs        --namespace=eo-user-compute
+    # Namespace: eo-user-compute
+    kubectl describe deployments --namespace=eo-user-compute
+    kubectl describe services    --namespace=eo-user-compute
+    kubectl describe jobs        --namespace=eo-user-compute
 
-#kubectl describe jobs/pi --namespace=eo-user-compute
-#kubectl describe job pi   --namespace=eo-user-compute
+    #kubectl describe jobs/pi --namespace=eo-user-compute
+    #kubectl describe job pi   --namespace=eo-user-compute
 
-sleep 30
+    kubectl describe quota --namespace=eo-user-compute
+fi
 
-kubectl describe quota --namespace=eo-user-compute
-
+describe pv
+describe pvc --namespace=eo-user-compute
 kubectl logs --namespace=eo-user-compute job/pi --all-containers=true
