@@ -11,7 +11,7 @@ spec:
   - ReadWriteOnce  # read/write by a single node
   persistentVolumeReclaimPolicy: Retain
   # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#writing-portable-configuration
-#  storageClassName: slow  - make it default for portability
+   storageClassName: nil # make it default for portability
 #  mountOptions:
 #  - hard
 #  - nfsvers=4.1
