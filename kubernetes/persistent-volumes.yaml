@@ -5,19 +5,15 @@ metadata:
   #namespace: eo-user-compute across namespaces?
 spec:
   capacity:
-    storage: 5Gi
+    storage: 2Gi
   volumeMode: Filesystem
   accessModes:
   - ReadWriteOnce  # read/write by a single node
   persistentVolumeReclaimPolicy: Retain
   # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#writing-portable-configuration
-   storageClassName: null # make it default for portability
-#  mountOptions:
-#  - hard
-#  - nfsvers=4.1
-#  nfs:
-#    path: /tmp
-#    server: 172.17.0.2
+   #storageClassName: ???
+  hostPath:  # volume type - dev/test only on minikube
+    path: /data
 
 ---
 
@@ -32,7 +28,7 @@ spec:
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 3Gi   # Only 3GB required
+      storage: 1Gi   # Only 1GB required
 #  storageClassName: slow
   selector:
     matchLabels:
