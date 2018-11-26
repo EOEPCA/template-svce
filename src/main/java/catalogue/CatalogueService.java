@@ -102,7 +102,9 @@ public class CatalogueService {
             js.id = jobResult.getMetadata().getUid();
             js.createdTS = jobResult.getMetadata().getCreationTimestamp().toDateTimeISO().toString();
             //js.id = jobResult.getSpec().getSelector().toString();
-            js.volume = jobResult.getSpec().getTemplate().getSpec().getVolumes().get(0).getName();
+
+            // TODO this is the PVC name in the podspec NOT the actual volume name.  Can get this via the PVC.
+            js.volume = jobResult.getSpec().getTemplate().getSpec().getVolumes().get(0).getPersistentVolumeClaim().getClaimName();
 
             ctx.json(js);
 
