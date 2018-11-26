@@ -76,9 +76,10 @@ public class SearchCatalogue {
         if (response.code() <= 201) {
             ObjectMapper mapper = new ObjectMapper();
 
-            JobSummary out = mapper.readValue(response.body().string(), JobSummary.class);
+            String body = response.body().string();
+            JobSummary out = mapper.readValue(body , JobSummary.class);
 
-            System.out.println("Integration test response - Job Summary : " + response.body().string());
+            System.out.println("Integration test response - Job Summary : " + body);
         }
 
         // TODO assert on job summary

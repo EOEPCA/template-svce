@@ -89,7 +89,7 @@ public class CatalogueService {
             JobSummary js = new JobSummary();
 
             DateTime startTime = jobResult.getStatus().getStartTime();
-            if (startTime !=null) {
+            if (startTime != null) {
                 js.startTS = startTime.toDateTimeISO().toString();
 //                        LocalDateTime.of(startTime.year().get(),
 //                        startTime.monthOfYear().get(),
