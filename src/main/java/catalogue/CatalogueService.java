@@ -11,7 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
+import java.util.Set;
+
+//import io.prometheus.client.CollectorRegistry;
+//import io.prometheus.client.exporter.common.TextFormat;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 public class CatalogueService {
@@ -21,6 +28,7 @@ public class CatalogueService {
 
     // The namespace where the batch job will be executed
     private static final String TARGET_NAMESPACE = "eo-user-compute"; //"eo-services";
+//    private static final CollectorRegistry registry = CollectorRegistry.defaultRegistry;
 
     public static void main(String[] args) {
         Javalin app = Javalin.create().start(7000);
@@ -49,6 +57,8 @@ public class CatalogueService {
 
         // should be a POST
         app.get("/process", CatalogueService::spawnBatchJob);
+
+        app.get("/metrics", CatalogueService::metrics);
     }
 
     /**
@@ -85,7 +95,6 @@ public class CatalogueService {
             ctx.status(500);
         }
     }
-
 
     /**
      * To launch a batch job need:
@@ -166,6 +175,24 @@ public class CatalogueService {
         pvc.claimName("pvc-sample-eo-data");  // must match the claim name defined in YAML
 
         return job;
+    }
+
+    // Code adapted from
+    // https://github.com/prometheus/client_java/blob/master/simpleclient_servlet/src/main/java/io/prometheus/client/exporter/MetricsServlet.java
+    // https://cloud.google.com/solutions/best-practices-for-operating-containers
+    public static void metrics(Context ctx) throws IOException {
+
+//        HttpServletResponse resp = ctx.res;
+//        resp.setStatus(HttpServletResponse.SC_OK);
+//        resp.setContentType(TextFormat.CONTENT_TYPE_004);
+//
+//        Writer writer = resp.getWriter();
+//        try {
+//            TextFormat.write004(writer, registry.filteredMetricFamilySamples(Set.of());
+//            writer.flush();
+//        } finally {
+//            writer.close();
+//        }
     }
 }
 

@@ -61,6 +61,12 @@ dependencies {
     
     // Integration Test Dependencies
     integrationTestCompile("com.squareup.okhttp3:okhttp:3.12.0")
+
+    // Prometheus Metric Monitoring Client for JVM and Jetty
+//    compile group: 'io.prometheus', name: 'simpleclient', version: '0.5.0'
+//    compile group: 'io.prometheus', name: 'simpleclient_hotspot', version: '0.5.0'
+//    compile group: 'io.prometheus', name: 'simpleclient_jetty', version: '0.5.0'
+
 }
 
 shadowJar {
