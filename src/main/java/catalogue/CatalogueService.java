@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 //import io.prometheus.client.CollectorRegistry;
@@ -90,21 +89,25 @@ public class CatalogueService {
             JobSummary js = new JobSummary();
 
             DateTime startTime = jobResult.getStatus().getStartTime();
-            js.startTime = LocalDateTime.of(startTime.year().get(),
-                    startTime.monthOfYear().get(),
-                    startTime.dayOfMonth().get(),
-                    startTime.hourOfDay().get(),
-                    startTime.minuteOfHour().get(),
-                    startTime.secondOfMinute().get()) ;
-
+            if (startTime !=null) {
+                js.startTS = startTime.toDateTimeISO().toString();
+//                        LocalDateTime.of(startTime.year().get(),
+//                        startTime.monthOfYear().get(),
+//                        startTime.dayOfMonth().get(),
+//                        startTime.hourOfDay().get(),
+//                        startTime.minuteOfHour().get(),
+//                        startTime.secondOfMinute().get());
+            }
             js.name = jobResult.getMetadata().getName();
-            js.id = jobResult.getSpec().getSelector().toString();
+            js.id = jobResult.getMetadata().getUid();
+            js.createdTS = jobResult.getMetadata().getCreationTimestamp().toDateTimeISO().toString();
+            //js.id = jobResult.getSpec().getSelector().toString();
             js.volume = jobResult.getSpec().getTemplate().getSpec().getVolumes().get(0).getName();
 
             ctx.json(js);
 
 
-        } catch (IOException | ApiException e) {
+        } catch (IOException | ApiException | NullPointerException e) {
             logger.error(">>>>>>> Batch Execution Exception cause {} {} ", e.getCause(), e.getMessage());
             ctx.status(500);
         }
@@ -228,7 +231,8 @@ class JobSummary {
     String name;
     String id;
     String volume;
-    LocalDateTime startTime;
+    String startTS;
+    String createdTS;
 
     public String getName() {
         return name;
@@ -254,11 +258,19 @@ class JobSummary {
         this.volume = volume;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
+    public String getStartTS() {
+        return startTS;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public void setStartTS(String startTS) {
+        this.startTS = startTS;
+    }
+
+    public String getCreatedTS() {
+        return createdTS;
+    }
+
+    public void setCreatedTS(String createdTS) {
+        this.createdTS = createdTS;
     }
 }

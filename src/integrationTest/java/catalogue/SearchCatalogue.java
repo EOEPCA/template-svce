@@ -71,7 +71,7 @@ public class SearchCatalogue {
                 .build();
 
         Response response = client.newCall(request).execute();
-        //assertEquals(200, response.code());
+        assertEquals(200, response.code());
 
         if (response.code() <= 201) {
             ObjectMapper mapper = new ObjectMapper();
