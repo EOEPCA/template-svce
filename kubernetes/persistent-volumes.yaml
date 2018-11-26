@@ -32,6 +32,6 @@ spec:
 #  storageClassName: slow
   selector:
     matchLabels:
-      release: pv-sample-eo-data   # matches the PV
+      name: pv-sample-eo-data   # matches the PV
 #    matchExpressions:
 #    - {key: environment, operator: In, values: [dev]}
