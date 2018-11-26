@@ -73,11 +73,13 @@ public class SearchCatalogue {
         Response response = client.newCall(request).execute();
         //assertEquals(200, response.code());
 
-        ObjectMapper mapper = new ObjectMapper();
+        if (response.code() <= 201) {
+            ObjectMapper mapper = new ObjectMapper();
 
-        JobSummary out = mapper.readValue(response.body().string(), JobSummary.class);
+            JobSummary out = mapper.readValue(response.body().string(), JobSummary.class);
 
-        System.out.println("Integration test response - Job Summary : "+response.body().string());
+            System.out.println("Integration test response - Job Summary : " + response.body().string());
+        }
 
         // TODO assert on job summary
     }
