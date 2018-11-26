@@ -7,18 +7,16 @@ import io.kubernetes.client.ApiException;
 import io.kubernetes.client.apis.BatchV1Api;
 import io.kubernetes.client.models.*;
 import io.kubernetes.client.util.Config;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 //import io.prometheus.client.CollectorRegistry;
 //import io.prometheus.client.exporter.common.TextFormat;
-
-import javax.servlet.http.HttpServletResponse;
 
 
 public class CatalogueService {
@@ -50,7 +48,7 @@ public class CatalogueService {
 
           logger.debug("Searching catalogue...");
 
-          Output out = new Output();
+          SearchResult out = new SearchResult();
           out.result = "search results";
           ctx.json(out);
         } );
@@ -87,8 +85,24 @@ public class CatalogueService {
             V1Job job = defineJob();
             logger.debug(">>>>> JOB DEFINED");
             V1Job jobResult = launchBatch(job, TARGET_NAMESPACE);
-            ctx.json(jobResult);
-            //ctx.result("OK");
+            logger.debug(">>>>> JOB Resource {}", jobResult);
+
+            JobSummary js = new JobSummary();
+
+            DateTime startTime = jobResult.getStatus().getStartTime();
+            js.startTime = LocalDateTime.of(startTime.year().get(),
+                    startTime.monthOfYear().get(),
+                    startTime.dayOfMonth().get(),
+                    startTime.hourOfDay().get(),
+                    startTime.minuteOfHour().get(),
+                    startTime.secondOfMinute().get()) ;
+
+            js.name = jobResult.getMetadata().getName();
+            js.id = jobResult.getSpec().getSelector().toString();
+            js.volume = jobResult.getSpec().getTemplate().getSpec().getVolumes().get(0).getName();
+
+            ctx.json(js);
+
 
         } catch (IOException | ApiException e) {
             logger.error(">>>>>>> Batch Execution Exception cause {} {} ", e.getCause(), e.getMessage());
@@ -197,7 +211,7 @@ public class CatalogueService {
 }
 
 
-class Output {
+class SearchResult {
 
     String result;
 
@@ -208,4 +222,43 @@ class Output {
     public void setResult(String res) {
         result = res;
     }   
+}
+
+class JobSummary {
+    String name;
+    String id;
+    String volume;
+    LocalDateTime startTime;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getVolume() {
+        return volume;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
 }

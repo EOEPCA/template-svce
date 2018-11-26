@@ -1,7 +1,6 @@
 package catalogue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.kubernetes.client.models.V1Job;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -56,7 +55,7 @@ public class SearchCatalogue {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        Output out = mapper.readValue(response.body().string(), Output.class);
+        SearchResult out = mapper.readValue(response.body().string(), SearchResult.class);
 
         assertEquals("search results", out.result);
     }
@@ -72,15 +71,15 @@ public class SearchCatalogue {
                 .build();
 
         Response response = client.newCall(request).execute();
-        System.out.println(">>>>>> "+response.body().string());
-        //assertEquals(200, response.code());
+        assertEquals(200, response.code());
 
-//        ObjectMapper mapper = new ObjectMapper();
-//
-//        V1Job out = mapper.readValue(response.body().string(), V1Job.class);
-//
-//        System.out.println(out);
-        //assertEquals("search results", out.result);
+        ObjectMapper mapper = new ObjectMapper();
+
+        JobSummary out = mapper.readValue(response.body().string(), JobSummary.class);
+
+        System.out.println("Integration test response - Job Summary : "+response.body().string());
+
+        // TODO assert on job summary
     }
 
 
