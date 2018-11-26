@@ -2,7 +2,8 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: pv-sample-eo-data
-  #namespace: eo-user-compute across namespaces?
+  labels:
+    vol-type: eo-end-user-data
 spec:
   capacity:
     storage: 2Gi
@@ -32,6 +33,6 @@ spec:
 #  storageClassName: slow
   selector:
     matchLabels:
-      name: pv-sample-eo-data   # matches the PV
+      vol-type: eo-end-user-data   # matches the PV labels
 #    matchExpressions:
 #    - {key: environment, operator: In, values: [dev]}
