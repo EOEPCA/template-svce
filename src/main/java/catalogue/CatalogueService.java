@@ -211,7 +211,7 @@ public class CatalogueService {
         CoreV1Api api = new CoreV1Api(apiClient);
 
         try {
-            V1PersistentVolumeList vols = api.listPersistentVolume("true", null, null, true, null, 10, null, null, false);
+            V1PersistentVolumeList vols = api.listPersistentVolume("true", null, null, true, "vol-type=eo-end-user-data", 10, null, null, false);
 
             logger.info(vols.toString());
         }

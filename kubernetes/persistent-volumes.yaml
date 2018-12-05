@@ -56,6 +56,6 @@ spec:
   selector:
     matchLabels:
       vol-type: eo-end-user-data   # matches the PV labels
-      vol-id: "1999"
+      vol-id: "vol_1999"
 #    matchExpressions:
 #    - {key: environment, operator: In, values: [dev]}
