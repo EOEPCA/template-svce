@@ -201,7 +201,7 @@ public class CatalogueService {
 
     public static void listPersistentVolumes(Context ctx) {
 
-        String label = ctx.queryParam("label", "vol-type=eo-end-user-data");  // default value
+        String label = ctx.queryParam("label");//, "vol-type=eo-end-user-data");  // default value
 
         ApiClient apiClient = null;
         try {
@@ -215,20 +215,28 @@ public class CatalogueService {
         try {
             V1PersistentVolumeList vols = api.listPersistentVolume("true", null, null, true, label, 10, null, null, false);
 
-            List<VolumeSummary> volSummaries = List.of();
+            if (vols != null) {
+                logger.info(vols.toString());
 
-            for (V1PersistentVolume vol : vols.getItems()) {
-                VolumeSummary v = new VolumeSummary();
-                v.name = vol.getMetadata().getName();
-                v.capacity = vol.getSpec().getVolumeMode();
-                v.status = vol.getStatus().getPhase();
+                List<VolumeSummary> volSummaries = List.of();
 
-                volSummaries.add(v);
+                for (V1PersistentVolume vol : vols.getItems()) {
+                    VolumeSummary v = new VolumeSummary();
+                    v.name = vol.getMetadata().getName();
+                    v.capacity = vol.getSpec().getVolumeMode();
+                    v.status = vol.getStatus().getPhase();
+
+                    volSummaries.add(v);
+                }
+
+
+                ctx.json(volSummaries);
+                ctx.status(200);
             }
-            logger.debug(vols.toString());
 
-            ctx.json(volSummaries);
-            ctx.status(200);
+            else {
+                ctx.status(404);
+            }
         }
         catch (ApiException e) {
             logger.error(e.getResponseBody());

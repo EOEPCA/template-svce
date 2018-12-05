@@ -4,7 +4,7 @@ metadata:
   name: pv-sample-eo-data-1
   labels:
     vol-type: eo-end-user-data
-    vol-id: vol_1999
+    vol-id: vol_1999  # must be a string - use explicit quotes if an integer
 spec:
   capacity:
     storage: 2Gi
