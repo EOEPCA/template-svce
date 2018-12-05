@@ -204,6 +204,8 @@ public class CatalogueService {
 
         String label = ctx.queryParam("label", "vol-type=eo-end-user-data");  // default value
 
+        logger.info("URL is {} Label value  is {}", ctx.url(), label);
+
         ApiClient apiClient = null;
         try {
             apiClient = Config.defaultClient();

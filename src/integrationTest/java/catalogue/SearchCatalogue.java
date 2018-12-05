@@ -90,7 +90,7 @@ public class SearchCatalogue {
 
     @Test
     @DisplayName("Selects all volumes of a type")
-    public void selectVolume() throws IOException {
+    public void selectVolumes() throws IOException {
         OkHttpClient client = new OkHttpClient();
 
 
