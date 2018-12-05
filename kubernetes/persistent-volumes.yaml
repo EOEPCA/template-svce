@@ -4,7 +4,7 @@ metadata:
   name: pv-sample-eo-data
   labels:
     vol-type: eo-end-user-data
-    vol-id: "1999"
+    vol-id: "vol_1999"
 spec:
   capacity:
     storage: 2Gi
@@ -16,6 +16,27 @@ spec:
    #storageClassName: ???
   hostPath:  # volume type - dev/test only on minikube
     path: /mnt
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-sample-eo-data
+  labels:
+    vol-type: eo-end-user-data
+    vol-id: "vol_0001"
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce  # read/write by a single node
+  persistentVolumeReclaimPolicy: Retain
+    # https://kubernetes.io/docs/concepts/storage/persistent-volumes/#writing-portable-configuration
+  #storageClassName: ???
+  hostPath:  # volume type - dev/test only on minikube
+    path: /mount
 
 ---
 
