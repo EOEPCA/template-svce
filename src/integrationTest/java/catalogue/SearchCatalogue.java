@@ -1,5 +1,6 @@
 package catalogue;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SearchCatalogue {
 
@@ -98,14 +100,14 @@ public class SearchCatalogue {
         Response response = client.newCall(request).execute();
         assertEquals(200, response.code());
 
-//        if (response.code() <= 201) {
-//            ObjectMapper mapper = new ObjectMapper();
-//
-//            String body = response.body().string();
-//            JobSummary out = mapper.readValue(body , JobSummary.class);
-//
-//            System.out.println("Integration test response - Job Summary : " + body);
-//        }
+        if (response.code() <= 201) {
+            ObjectMapper mapper = new ObjectMapper();
+
+            String body = response.body().string();
+            List<VolumeSummary> out = mapper.readValue(body , new TypeReference<List<VolumeSummary>>(){});
+
+            System.out.println("Integration test response - Volume Summary : " + body);
+        }
 
         // TODO assert on job summary
     }

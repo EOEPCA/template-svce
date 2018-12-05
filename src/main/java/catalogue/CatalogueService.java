@@ -201,6 +201,8 @@ public class CatalogueService {
 
     public static void listPersistentVolumes(Context ctx) {
 
+        String label = ctx.queryParam("label", "vol-type=eo-end-user-data");  // default value
+
         ApiClient apiClient = null;
         try {
             apiClient = Config.defaultClient();
@@ -211,13 +213,27 @@ public class CatalogueService {
         CoreV1Api api = new CoreV1Api(apiClient);
 
         try {
-            V1PersistentVolumeList vols = api.listPersistentVolume("true", null, null, true, "vol-type=eo-end-user-data", 10, null, null, false);
+            V1PersistentVolumeList vols = api.listPersistentVolume("true", null, null, true, label, 10, null, null, false);
 
-            logger.info(vols.toString());
+            List<VolumeSummary> volSummaries = List.of();
+
+            for (V1PersistentVolume vol : vols.getItems()) {
+                VolumeSummary v = new VolumeSummary();
+                v.name = vol.getMetadata().getName();
+                v.capacity = vol.getSpec().getVolumeMode();
+                v.status = vol.getStatus().getPhase();
+
+                volSummaries.add(v);
+            }
+            logger.debug(vols.toString());
+
+            ctx.json(volSummaries);
+            ctx.status(200);
         }
         catch (ApiException e) {
             logger.error(e.getResponseBody());
             logger.error(">>>>> Code {} Message {}", e.getCode(), e.getMessage());
+            ctx.status(500);
         }
 
     }
@@ -301,5 +317,35 @@ class JobSummary {
 
     public void setCreatedTS(String createdTS) {
         this.createdTS = createdTS;
+    }
+}
+
+class VolumeSummary {
+    String name;
+    String capacity;
+    String status;
+
+    public String getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(String capacity) {
+        this.capacity = capacity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

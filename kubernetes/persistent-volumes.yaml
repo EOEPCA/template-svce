@@ -4,7 +4,7 @@ metadata:
   name: pv-sample-eo-data-1
   labels:
     vol-type: eo-end-user-data
-    vol-id: "vol_1999"
+    vol-id: vol_1999
 spec:
   capacity:
     storage: 2Gi
@@ -25,7 +25,7 @@ metadata:
   name: pv-sample-eo-data-2
   labels:
     vol-type: eo-end-user-data
-    vol-id: "vol_0001"
+    vol-id: vol_0001
 spec:
   capacity:
     storage: 1Gi
@@ -56,6 +56,6 @@ spec:
   selector:
     matchLabels:
       vol-type: eo-end-user-data   # matches the PV labels
-      vol-id: "vol_1999"
+      vol-id: vol_1999
 #    matchExpressions:
 #    - {key: environment, operator: In, values: [dev]}
