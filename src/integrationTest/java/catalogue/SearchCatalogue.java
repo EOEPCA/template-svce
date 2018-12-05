@@ -89,7 +89,7 @@ public class SearchCatalogue {
     }
 
     @Test
-    @DisplayName("Selects a volume")
+    @DisplayName("Selects all volumes of a type")
     public void selectVolume() throws IOException {
         OkHttpClient client = new OkHttpClient();
 
@@ -117,9 +117,40 @@ public class SearchCatalogue {
             System.out.println(rbody.string());
         }
 
-        // TODO assert on job summary
+        // TODO assert on vol summary
     }
 
+    @Test
+    @DisplayName("Selects a volume")
+    public void selectSpecificVolume() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+
+        Request request = new Request.Builder()
+                .url(endpointUrl+"/volumes?label=vol-type=eo-end-user-data,vol-id=vol_0001")
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+        System.out.println("Status code: "+response.code());
+        assertEquals(200, response.code());
+
+        ResponseBody rbody = response.body();
+
+        if (response.code() <= 201) {
+            ObjectMapper mapper = new ObjectMapper();
+
+            String body = rbody.string();
+            List<VolumeSummary> out = mapper.readValue(body , new TypeReference<List<VolumeSummary>>(){});
+
+            System.out.println("Integration test response - Volume Summary : " + body);
+        }
+        else if (rbody != null) {
+            System.out.println(rbody.string());
+        }
+
+        // TODO assert on vol summary
+    }
 
 
     @Test
