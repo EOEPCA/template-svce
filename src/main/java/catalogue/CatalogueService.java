@@ -245,7 +245,11 @@ public class CatalogueService {
             ctx.result("Container API error");
             ctx.status(502);
         }
-
+        catch(Exception e) {
+            logger.error(">>>>> type {} Message {}", e.getClass().getName(), e.getMessage());
+            ctx.result("Volume error "+e.getClass().getName());
+            ctx.status(500);
+        }
     }
 
 
