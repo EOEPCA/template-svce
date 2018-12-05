@@ -127,7 +127,7 @@ public class SearchCatalogue {
 
 
         Request request = new Request.Builder()
-                .url(endpointUrl+"/volumes?label=vol-type=eo-end-user-data,vol-id=vol_0001")
+                .url(endpointUrl+"/volumes?label=vol-type%3Deo-end-user-data,vol-id%3Dvol_0001")
                 .build();
 
         Response response = client.newCall(request).execute();
