@@ -141,12 +141,11 @@ rules:
 
 ---
 
-# Role binding for a Cluster Role limited to a specific namespace...a cluster role binding is cluster wide
-kind: RoleBinding
+# ClusterRoleBinding is needed as volumes are a cluster wide resource
+kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: volume-reader
-  namespace: eo-user-compute
 subjects:
 - kind: ServiceAccount  # N.B.
   name: bob-the-builder
@@ -155,3 +154,4 @@ roleRef:
   kind: ClusterRole
   name: volume-reader
   apiGroup: rbac.authorization.k8s.io
+
