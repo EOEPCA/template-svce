@@ -201,7 +201,7 @@ public class CatalogueService {
 
     public static void listPersistentVolumes(Context ctx) {
 
-        String label = ctx.queryParam("label");//, "vol-type=eo-end-user-data");  // default value
+        String label = ctx.queryParam("label", null);  //, "vol-type=eo-end-user-data");  // default value
 
         ApiClient apiClient = null;
         try {
