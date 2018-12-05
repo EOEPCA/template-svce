@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -102,13 +103,18 @@ public class SearchCatalogue {
         System.out.println("Status code: "+response.code());
         assertEquals(200, response.code());
 
+        ResponseBody rbody = response.body();
+
         if (response.code() <= 201) {
             ObjectMapper mapper = new ObjectMapper();
 
-            String body = response.body().string();
+            String body = rbody.string();
             List<VolumeSummary> out = mapper.readValue(body , new TypeReference<List<VolumeSummary>>(){});
 
             System.out.println("Integration test response - Volume Summary : " + body);
+        }
+        else if (rbody != null) {
+            System.out.println(rbody.string());
         }
 
         // TODO assert on job summary

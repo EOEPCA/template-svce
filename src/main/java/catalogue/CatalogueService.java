@@ -235,13 +235,15 @@ public class CatalogueService {
             }
 
             else {
+                ctx.result("Volumes not found");
                 ctx.status(404);
             }
         }
         catch (ApiException e) {
             logger.error(e.getResponseBody());
             logger.error(">>>>> Code {} Message {}", e.getCode(), e.getMessage());
-            ctx.status(500);
+            ctx.result("Container API error");
+            ctx.status(502);
         }
 
     }
