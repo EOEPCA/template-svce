@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 //import io.prometheus.client.CollectorRegistry;
@@ -218,7 +219,7 @@ public class CatalogueService {
             if (vols != null) {
                 logger.info(vols.toString());
 
-                List<VolumeSummary> volSummaries = List.of();
+                List<VolumeSummary> volSummaries = new ArrayList<>();
 
                 for (V1PersistentVolume vol : vols.getItems()) {
                     VolumeSummary v = new VolumeSummary();
@@ -228,7 +229,6 @@ public class CatalogueService {
 
                     volSummaries.add(v);
                 }
-
 
                 ctx.json(volSummaries);
                 ctx.status(200);
