@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-sample-eo-data
+  name: pv-sample-eo-data-1
   labels:
     vol-type: eo-end-user-data
     vol-id: "vol_1999"
@@ -22,7 +22,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-sample-eo-data
+  name: pv-sample-eo-data-2
   labels:
     vol-type: eo-end-user-data
     vol-id: "vol_0001"
