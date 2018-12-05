@@ -85,6 +85,32 @@ public class SearchCatalogue {
         // TODO assert on job summary
     }
 
+    @Test
+    @DisplayName("Selects a volume")
+    public void selectVolume() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+
+
+        Request request = new Request.Builder()
+                .url(endpointUrl+"/volumes")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        assertEquals(200, response.code());
+
+//        if (response.code() <= 201) {
+//            ObjectMapper mapper = new ObjectMapper();
+//
+//            String body = response.body().string();
+//            JobSummary out = mapper.readValue(body , JobSummary.class);
+//
+//            System.out.println("Integration test response - Job Summary : " + body);
+//        }
+
+        // TODO assert on job summary
+    }
+
+
 
     @Test
     @DisplayName("No Op Test to test Gradle logging")

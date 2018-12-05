@@ -5,6 +5,7 @@ import io.javalin.Javalin;
 import io.kubernetes.client.ApiClient;
 import io.kubernetes.client.ApiException;
 import io.kubernetes.client.apis.BatchV1Api;
+import io.kubernetes.client.apis.CoreV1Api;
 import io.kubernetes.client.models.*;
 import io.kubernetes.client.util.Config;
 import org.joda.time.DateTime;
@@ -56,6 +57,8 @@ public class CatalogueService {
         app.get("/process", CatalogueService::spawnBatchJob);
 
         app.get("/metrics", CatalogueService::metrics);
+
+        app.get("/volumes", CatalogueService::listPersistentVolumes);
     }
 
     /**
@@ -195,6 +198,30 @@ public class CatalogueService {
 
         return job;
     }
+
+    public static void listPersistentVolumes(Context ctx) {
+
+        ApiClient apiClient = null;
+        try {
+            apiClient = Config.defaultClient();
+        } catch (IOException e) {
+            logger.error(">>>>> API Client IOException {}", e.getMessage());
+        }
+
+        CoreV1Api api = new CoreV1Api(apiClient);
+
+        try {
+            V1PersistentVolumeList vols = api.listPersistentVolume("true", null, null, true, null, 10, null, null, false);
+
+            logger.info(vols.toString());
+        }
+        catch (ApiException e) {
+            logger.error(e.getResponseBody());
+            logger.error(">>>>> Code {} Message {}", e.getCode(), e.getMessage());
+        }
+
+    }
+
 
     // Code adapted from
     // https://github.com/prometheus/client_java/blob/master/simpleclient_servlet/src/main/java/io/prometheus/client/exporter/MetricsServlet.java
