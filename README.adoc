@@ -6,6 +6,7 @@
 
 == Gradle and Integration Tests
 
+
 Details on adding custom integration/acceptance tests are at:
 
 https://docs.gradle.org/current/javadoc/ see the https://docs.gradle.org/current/javadoc/org/gradle/api/tasks/testing/Test.html
