@@ -1,11 +1,37 @@
-= Catalogue Service
+= Template for developing an EOEPCA Service
 
-- Javalin framework
-- Log4j2 + YAML
-- Junit 5
+[TO BE REMOVED/]
+== Checklist for feature coding tasks
+
+== Checklist for non-functional coding tasks
+
+== Checklist for engineering tasks
+- Configuration management (git)
+. List file exclusions in .gitignore
+- Build management (gradle)
+. File settings.gradle
+.. Define rootProject.name
+. File build.gradle
+.. Define mainClassName
+.. List dependencies
+- CD/CI
+. Define language
+. Stage: build (compile, unit test, package)
+.. [TBD]
+. Stage: smoke and acceptance test
+.. [TBD]
+. Stage: production
+.. [TBD]
+- Deployment management
+[TBD]
+- Documentation
+. File README.adoc (this)
+.. Describe service
+.. Remove -when finished- these checklists from README.adoc
+
+== Checklist for testing coding
 
 == Gradle and Integration Tests
-
 
 Details on adding custom integration/acceptance tests are at:
 
@@ -42,6 +68,13 @@ These files can be uploaded to an off-Travis location for viewing, aggregation, 
 
 As well as file based output `testLogging` at the test method level for failed and passed tests has been configured.
 This output appears on the Travis console.
+
+[/TO BE REMOVED]
+
+== Technology stack
+- Javalin framework
+- Log4j2 + YAML
+- Junit 5
 
 === Upgrading Gradle Wrapper
 
