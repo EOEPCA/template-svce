@@ -3,7 +3,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.2'
 }
 
-mainClassName = "catalogue.CatalogueService"
+mainClassName = "eoepca.TemplateService"
 
 
 repositories {

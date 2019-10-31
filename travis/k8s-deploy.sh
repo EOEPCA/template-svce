@@ -33,19 +33,19 @@ if ($debug == "true"); then
     kubectl get secret db-user-pass -o yaml --namespace=eo-services
     kubectl get namespaces
     kubectl get pods --all-namespaces
-    kubectl get deployments --namespace=eo-services catalogue-service-deployment
+    kubectl get deployments --namespace=eo-services template-service-deployment
     #- kubectl logs -lapp=catalogue-service --all-containers=true
-    kubectl logs --namespace=eo-services deployment/catalogue-service-deployment --all-containers=true
+    kubectl logs --namespace=eo-services deployment/template-service-deployment --all-containers=true
     kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
     #- kubectl expose deployment catalogue-service-deployment --name=cat-svce2 --port=8083 --target-port=7000 --type=NodePort
     #- kubectl get svc cat-svce
-    kubectl get service --namespace=eo-services cat-svce -o json
+    kubectl get service --namespace=eo-services template-svce -o json
 
-    kubectl describe deployment --namespace=eo-services catalogue-service-deployment
-    kubectl describe service --namespace=eo-services cat-svce
+    kubectl describe deployment --namespace=eo-services template-service-deployment
+    kubectl describe service --namespace=eo-services template-svce
     kubectl describe service --namespace=eo-services frontend
-    clusterIP=$(kubectl get svc --namespace=eo-services cat-svce -o json | jq -r '.spec.clusterIP')
-    echo Cluster IP of cat-svce is $clusterIP
+    clusterIP=$(kubectl get svc --namespace=eo-services template-svce -o json | jq -r '.spec.clusterIP')
+    echo Cluster IP of template-svce is $clusterIP
 
 fi
 
@@ -54,16 +54,16 @@ fi
 echo Testing connectivity with the services
 # local host machine's minikube VM IP
 minikubeIP=$(minikube ip)
-catSvcNodePort=$(kubectl get service --namespace=eo-services cat-svce --output=jsonpath='{.spec.ports[0].nodePort}')
+templateSvcNodePort=$(kubectl get service --namespace=eo-services template-svce --output=jsonpath='{.spec.ports[0].nodePort}')
 revProxyNodePort=$(kubectl get svc --namespace=eo-services frontend --output=jsonpath='{.spec.ports[0].nodePort}')
 
 if ($debug == "true"); then
     # Both the micro-service and reverse proxy are exposed as node ports for testing purposes
     # curl echoes both ports to check connectivity.  The second set echoes the server headers should report nginx and javalin
     curl http://${minikubeIP}:${revProxyNodePort}/search | jq '.'
-    curl http://${minikubeIP}:${catSvcNodePort}/search | jq '.'
+    curl http://${minikubeIP}:${templateSvcNodePort}/search | jq '.'
     curl -si http://${minikubeIP}:${revProxyNodePort}/search
-    curl -si http://${minikubeIP}:${catSvcNodePort}/search
+    curl -si http://${minikubeIP}:${templateSvcNodePort}/search
 fi
 
 echo Running integration tests
@@ -75,7 +75,7 @@ export SEARCH_SERVICE_PORT=${revProxyNodePort}
 sleep 60
 
 kubectl logs --namespace=eo-services deployment/frontend --all-containers=true
-kubectl logs --namespace=eo-services deployment/catalogue-service-deployment --all-containers=true
+kubectl logs --namespace=eo-services deployment/template-service-deployment --all-containers=true
 
 if ($debug == "true"); then
     # Namespace: eo-services

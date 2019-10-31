@@ -21,11 +21,6 @@ Configuration:
       AppenderRef:
         - ref: DetailedConsole
     Logger:
-#      - name: catalogue.CatalogueService
-#        level: debug
-#        AppenderRef:
-#          - ref: DetailedConsole
-#            level: debug
       - name: org.eclipse.jetty
         level: info
         AppenderRef:

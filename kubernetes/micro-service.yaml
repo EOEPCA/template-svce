@@ -4,12 +4,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cat-svce  # DNS name?
+  name: template-svce  # DNS name?
   namespace: eo-services
 spec:
   type: NodePort  # TODO
   selector: # matches to the pod template spec labels - associates the service with the deployment
-    app: catalogue-service
+    app: template-service
     tier: service
   ports:
   - protocol: TCP
@@ -21,24 +21,24 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: catalogue-service-deployment
+  name: template-service-deployment
   namespace: eo-services
 spec:
   selector:
     matchLabels: # matches to the pod template spec?
-      app: catalogue-service
+      app: template-service
       tier: service
   replicas: 1 # tells deployment to run 1 pod matching the template
   template:
     metadata:
       labels:
-        app: catalogue-service
+        app: template-service
         tier: service
     spec:
       serviceAccountName: bob-the-builder
       containers:
-      - name: cat-svce
-        image: eoepcaci/catalogue-service:latest # may not always want latest
+      - name: template-svce
+        image: eoepcaci/template-service:latest # may not always want latest
         ports:
         - containerPort: 7000
         env:
