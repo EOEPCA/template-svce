@@ -2,16 +2,13 @@
 
 # fail fast settings from https://dougrichardson.org/2018/08/03/fail-fast-bash-scripting.html
 set -euov pipefail
-# Not supported in travis (xenial)
-# shopt -s inherit_errexit
 
 # compiles, runs unit tests and packages as a single jar
-./gradlew build #--scan -s
-#ls -l build/libs
-
-buildTag=travis_${TRAVIS_BRANCH}_$TRAVIS_BUILD_NUMBER
+./gradlew build 
 
 # Create a Docker image and tag it as 'travis_<build number>'
+buildTag=travis_${TRAVIS_BRANCH}_$TRAVIS_BUILD_NUMBER
+
 docker build -t eoepca/template-service .
 docker tag eoepca/template-service $DOCKER_USERNAME/template-service:$buildTag
 

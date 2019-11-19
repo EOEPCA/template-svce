@@ -1,6 +1,6 @@
 sudo: required
 language: java
-install: false #true
+install: false 
 
 services:
   - docker
@@ -58,5 +58,5 @@ notifications:
     recipients:
       - a.person@acme.com
       - a.n.other@acme.com
-    on_success: never #never # default: change
+    on_success: never # default: change
     on_failure: never # default: always

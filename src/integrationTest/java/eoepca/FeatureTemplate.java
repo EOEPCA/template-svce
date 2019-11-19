@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.util.List;
 
-public class SearchTemplate {
+public class FeatureTemplate {
 
 
     private static String endpointUrl = "";
