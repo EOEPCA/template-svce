@@ -35,6 +35,8 @@ jobs:
       env: 
         - CHANGE_MINIKUBE_NONE_USER=true
         - K8S_VER=v1.12.0
+        - TF_INPUT=false
+        - TF_VER=0.12.16  
 
       before_script:
         # Install minikube and kubectl
@@ -49,9 +51,23 @@ jobs:
         # Wait for Kubernetes to be up and ready.
         - JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
         - kubectl cluster-info
-        # - minikube ssh mkdir /eo-data  ..... command not supported by "none" driver
+        
+        - echo "Installing Terraform version $TF_VER"
+        - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/$TF_VER/terraform_$TF_VER_linux_amd64.zip
+        - unzip /tmp/terraform.zip -d /tmp
+        - mkdir ~/bin
+        - mv /tmp/terraform ~/bin
+        - export PATH="~/bin:$PATH"
 
-      script: travis/k8s-deploy.sh
+
+      script: terraform plan ./terraform #travis/k8s-deploy.sh
+
+      deploy:
+        - provider: script
+          skip_cleanup: true
+          script: terraform apply .terraform
+          on:
+            branch: master
 
 notifications:
   email:
