@@ -58,6 +58,7 @@ jobs:
         - chmod +x /tmp/terraform
         - sudo mv /tmp/terraform /usr/local/bin/ 
         - export PATH="~/bin:$PATH"
+        - terraform init
 
 
       script: terraform plan ./terraform #travis/k8s-deploy.sh
