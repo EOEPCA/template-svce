@@ -170,9 +170,7 @@ Project Link: [https://github.com/EOEPCA/template-svce](https://github.com/EOEPC
 
 * []()
 * []()
-* []()
-
-README.md is based on [this template](https://github.com/othneildrew/Best-README-Template) by [Othneil Drew](https://github.com/othneildrew).
+* README.md is based on [this template](https://github.com/othneildrew/Best-README-Template) by [Othneil Drew](https://github.com/othneildrew).
 
 
 
@@ -187,5 +185,5 @@ README.md is based on [this template](https://github.com/othneildrew/Best-README
 [issues-shield]: https://img.shields.io/github/issues/EOEPCA/template-svce.svg?style=flat-square
 [issues-url]: https://github.com/EOEPCA/template-svce/issues
 [license-shield]: https://img.shields.io/github/license/EOEPCA/template-svce.svg?style=flat-square
-[license-url]: https://github.com/EOEPCA/template-svce/blob/master/LICENSE.txt
+[license-url]: https://github.com/EOEPCA/template-svce/blob/master/LICENSE
 [product-screenshot]: images/screenshot.png
