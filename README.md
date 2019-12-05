@@ -15,6 +15,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+![Build][build-shield]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -186,4 +187,5 @@ Project Link: [https://github.com/EOEPCA/template-svce](https://github.com/EOEPC
 [issues-url]: https://github.com/EOEPCA/template-svce/issues
 [license-shield]: https://img.shields.io/github/license/EOEPCA/template-svce.svg?style=flat-square
 [license-url]: https://github.com/EOEPCA/template-svce/blob/master/LICENSE
+[build-shield]: https://www.travis-ci.com/EOEPCA/template-svce.svg?branch=master
 [product-screenshot]: images/screenshot.png
