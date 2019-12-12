@@ -77,9 +77,9 @@ notifications:
     on_start: always
     on_cancel: always
     on_error: always
-  email:
-    recipients:
-      - a.person@acme.com
-      - a.n.other@acme.com
-    on_success: never # default: change
-    on_failure: never # default: always
+  # email:
+  #  recipients:
+  #    - a.person@acme.com
+  #    - a.n.other@acme.com
+  #  on_success: never # default: change
+  #  on_failure: never # default: always
