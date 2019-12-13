@@ -71,15 +71,9 @@ jobs:
             branch: master
 
 notifications:
-  webhooks: https://travis-for-jira-prod.toolsplus.app/travis/notifications?token=1e44e34f-53a7-37ac-ab20-5de7d6004e35
-  on_success: always
-  on_failure: always
-  on_start: always
-  on_cancel: always
-  on_error: always
-  #email:
-  #  recipients:
-  #    - a.person@acme.com
-  #    - a.n.other@acme.com
-  #  on_success: never # default: change
-  #  on_failure: never # default: always
+  email:
+    recipients:
+      - a.person@acme.com
+      - a.n.other@acme.com
+    on_success: never # default: change
+    on_failure: never # default: always
