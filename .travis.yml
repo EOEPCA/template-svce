@@ -1,0 +1,29 @@
+sudo: required
+language: java
+install: false 
+
+services:
+  - docker
+
+jobs:
+  include:
+    - stage: build (compile, unit test, package)
+      jdk: openjdk10
+      script: travis/build.sh
+
+    - stage: smoke and acceptance test
+      install: skip  # without this there's a `git clone` and `gradlew assemble` executed! 
+      script: travis/acceptanceTest.sh
+      
+    - stage: release
+      if: branch = master
+      install: skip
+      script: travis/release.sh
+    
+notifications:
+  email:
+    recipients:
+      - a.person@acme.com
+      - a.n.other@acme.com
+    on_success: never # default: change
+    on_failure: never # default: always
