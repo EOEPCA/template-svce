@@ -20,8 +20,8 @@ jobs:
       install: skip
       script: travis/release.sh
 
-import:
-  - docs/.travis.yml
+# import:
+#   - docs/.travis.yml
 
 notifications:
   email:
