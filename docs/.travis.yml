@@ -3,10 +3,7 @@ jobs:
     - stage: generate docs
       # if: branch = master
 
-      sudo: required
-
-      # services:
-      #   - docker
+      services: docker
 
       before_install:
         - mkdir -p output
