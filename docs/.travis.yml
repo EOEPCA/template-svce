@@ -5,8 +5,8 @@ jobs:
 
       sudo: required
 
-      services:
-        - docker
+      # services:
+      #   - docker
 
       before_install:
         - mkdir -p output
