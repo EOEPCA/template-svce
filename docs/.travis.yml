@@ -3,7 +3,8 @@ jobs:
     - stage: generate docs
       # if: branch = master
 
-      services: docker
+      services:
+        - docker
 
       before_install:
         - mkdir -p output
