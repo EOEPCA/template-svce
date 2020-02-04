@@ -5,3 +5,5 @@ This is the documentation for the template-svce.
 == Overview
 
 This is a template that should be used as a starting point.
+
+Updated to test the build pipeline.
