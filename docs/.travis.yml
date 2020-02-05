@@ -24,9 +24,13 @@ jobs:
         - docker logs asciidoc-to-pdf
 
       after_success:
-        - cd output
-        - git init
+        - mkdir tmp ; cd tmp
+        - git clone --branch gh-pages --single-branch "https://${GH_TOKEN}@${GH_REF}" repos
+        - cd repos
+        - mkdir -p current
+        - cp -r ../../output/* current
+        - if [ ! -e index.html ]; then cp ../../docs/gh-page-root.html index.html; fi
         - git config user.name "${GH_USER_NAME}"
         - git config user.email "${GH_USER_NAME}"
         - git add . ; git commit -m "Deploy to GitHub Pages"
-        - git push --force "https://${GH_TOKEN}@${GH_REF}" master:gh-pages
+        - git push
