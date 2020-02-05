@@ -27,18 +27,16 @@ jobs:
         - docker logs asciidoc-to-pdf
 
       after_success:
-        - echo $PWD
-        - pwd
         - echo "my working directory is $(pwd)"
-        # - mkdir tmp ; cd tmp
-        # - git clone --branch gh-pages --single-branch "https://${GH_TOKEN}@github.com/EOEPCA/${GH_REPOS_NAME}" repos
-        # - cd repos
-        # - rm -rf current
-        # - mv ../../docs/output current
-        # - mv current/index.pdf current/EOEPCA-${GH_REPOS_NAME}.pdf
-        # - if [ ! -e index.html ]; then cp ../../docs/gh-page-root.html index.html; fi
-        # - if [ ! -e README.adoc ]; then cp ../../docs/gh-page-README.adoc README.adoc; fi
-        # - git config user.name "${GH_USER_NAME}"
-        # - git config user.email "${GH_USER_NAME}"
-        # - git add . ; git commit -m "Deploy to GitHub Pages @ $(date -u)"
-        # - git push
+        - mkdir tmp ; cd tmp
+        - git clone --branch gh-pages --single-branch "https://${GH_TOKEN}@github.com/EOEPCA/${GH_REPOS_NAME}" repos
+        - cd repos
+        - rm -rf current
+        - mv ../../output current
+        - mv current/index.pdf current/EOEPCA-${GH_REPOS_NAME}.pdf
+        - if [ ! -e index.html ]; then cp ../../gh-page-root.html index.html; fi
+        - if [ ! -e README.adoc ]; then cp ../../gh-page-README.adoc README.adoc; fi
+        - git config user.name "${GH_USER_NAME}"
+        - git config user.email "${GH_USER_NAME}"
+        - git add . ; git commit -m "Deploy to GitHub Pages @ $(date -u)"
+        - git push
