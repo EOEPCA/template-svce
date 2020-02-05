@@ -23,7 +23,7 @@ GH_USER_EMAIL::
 the email address used in the commit message
 
 GH_REF::
-the URL to the GitHub repos (minus the scheme), e.g. 'github.com/eoepca/template-svce'
+the URL to the GitHub repos (minus the scheme), e.g. 'github.com/EOEPCA/template-svce'
 
 GH_TOKEN::
 the access token that allows Travis to push to the GitHub repos 'gh-pages' branch. This must be generated as a `Personal Access Token` within the settings of the `EOEPCA-CI` GitHub account (https://github.com/settings/tokens) and pasted in to set the environment variable in Travis. +
