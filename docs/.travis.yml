@@ -8,12 +8,15 @@ jobs:
       #   - docker
 
       before_install:
-        - mkdir -p output
+        - mkdir -p docs/output
         - docker pull asciidoctor/docker-asciidoctor
 
       script:
-        - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -D /documents/output docs/index.adoc
-        - docker run -v $TRAVIS_BUILD_DIR:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -D /documents/output docs/index.adoc
+        - cd docs
+        - cp -r images output
+        - cp -r stylesheets output
+        - docker run -v $PWD:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -D /documents/output index.adoc
+        - docker run -v $PWD:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -r asciidoctor-diagram -D /documents/output index.adoc
 
       after_error:
         - docker logs asciidoc-to-html
@@ -25,12 +28,14 @@ jobs:
 
       after_success:
         - mkdir tmp ; cd tmp
-        - git clone --branch gh-pages --single-branch "https://${GH_TOKEN}@${GH_REF}" repos
+        - git clone --branch gh-pages --single-branch "https://${GH_TOKEN}@github.com/EOEPCA/${GH_REPOS_NAME}" repos
         - cd repos
-        - mkdir -p current
-        - cp -r ../../output/* current
+        - rm -rf current
+        - mv ../../docs/output current
+        - mv current/index.pdf current/EOEPCA-${GH_REPOS_NAME}.pdf
         - if [ ! -e index.html ]; then cp ../../docs/gh-page-root.html index.html; fi
+        - if [ ! -e README.adoc ]; then cp ../../docs/gh-page-README.adoc README.adoc; fi
         - git config user.name "${GH_USER_NAME}"
         - git config user.email "${GH_USER_NAME}"
-        - git add . ; git commit -m "Deploy to GitHub Pages"
+        - git add . ; git commit -m "Deploy to GitHub Pages @ $(date -u)"
         - git push
