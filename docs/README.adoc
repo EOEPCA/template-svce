@@ -28,5 +28,3 @@ the URL to the GitHub repos (minus the scheme), e.g. 'github.com/eoepca/template
 GH_TOKEN::
 the access token that allows Travis to push to the GitHub repos 'gh-pages' branch. This must be generated as a `Personal Access Token` within the settings of the `EOEPCA-CI` GitHub account (https://github.com/settings/tokens) and pasted in to set the environment variable in Travis. +
 *In doing so, ensure that the 'display value' option is disabled*.
-
-eoepca-ci = a972f3b8d0a9c4e2aee975aeb90f2fee24668e67
