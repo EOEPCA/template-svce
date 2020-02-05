@@ -1,20 +1,15 @@
 services:
   - docker
 
-stages:
-  - generate docs
-
 jobs:
   include:
     - stage: build (compile, unit test, package)
-      if: branch != docgen
       language: java
       jdk: openjdk10
       install: skip
       script: travis/build.sh
 
     - stage: smoke and acceptance test
-      if: branch != docgen
       install: skip # without this there's a `git clone` and `gradlew assemble` executed!
       script: travis/acceptanceTest.sh
 
