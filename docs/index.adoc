@@ -1,4 +1,5 @@
 = template-svce
+:toc:
 
 This is the documentation for the template-svce.
 
