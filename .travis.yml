@@ -1,6 +1,9 @@
 services:
   - docker
 
+stages:
+  - generate docs
+
 jobs:
   include:
     - stage: build (compile, unit test, package)

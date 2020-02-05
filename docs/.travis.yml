@@ -8,11 +8,11 @@ jobs:
       #   - docker
 
       before_install:
-        - mkdir -p docs/output
         - docker pull asciidoctor/docker-asciidoctor
 
       script:
         - cd docs
+        - mkdir -p output
         - cp -r images output
         - cp -r stylesheets output
         - docker run -v $PWD:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -D /documents/output index.adoc
@@ -27,15 +27,18 @@ jobs:
         - docker logs asciidoc-to-pdf
 
       after_success:
-        - mkdir tmp ; cd tmp
-        - git clone --branch gh-pages --single-branch "https://${GH_TOKEN}@github.com/EOEPCA/${GH_REPOS_NAME}" repos
-        - cd repos
-        - rm -rf current
-        - mv ../../docs/output current
-        - mv current/index.pdf current/EOEPCA-${GH_REPOS_NAME}.pdf
-        - if [ ! -e index.html ]; then cp ../../docs/gh-page-root.html index.html; fi
-        - if [ ! -e README.adoc ]; then cp ../../docs/gh-page-README.adoc README.adoc; fi
-        - git config user.name "${GH_USER_NAME}"
-        - git config user.email "${GH_USER_NAME}"
-        - git add . ; git commit -m "Deploy to GitHub Pages @ $(date -u)"
-        - git push
+        - echo $PWD
+        - pwd
+        - echo "my working directory is $(pwd)"
+        # - mkdir tmp ; cd tmp
+        # - git clone --branch gh-pages --single-branch "https://${GH_TOKEN}@github.com/EOEPCA/${GH_REPOS_NAME}" repos
+        # - cd repos
+        # - rm -rf current
+        # - mv ../../docs/output current
+        # - mv current/index.pdf current/EOEPCA-${GH_REPOS_NAME}.pdf
+        # - if [ ! -e index.html ]; then cp ../../docs/gh-page-root.html index.html; fi
+        # - if [ ! -e README.adoc ]; then cp ../../docs/gh-page-README.adoc README.adoc; fi
+        # - git config user.name "${GH_USER_NAME}"
+        # - git config user.email "${GH_USER_NAME}"
+        # - git add . ; git commit -m "Deploy to GitHub Pages @ $(date -u)"
+        # - git push
