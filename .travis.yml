@@ -1,22 +1,19 @@
+services:
+  - docker
+
 jobs:
   include:
     - stage: build (compile, unit test, package)
       language: java
       jdk: openjdk10
-      services:
-        - docker
       install: skip
       script: travis/build.sh
 
     - stage: smoke and acceptance test
-      services:
-        - docker
       install: skip # without this there's a `git clone` and `gradlew assemble` executed!
       script: travis/acceptanceTest.sh
 
     - stage: release
-      services:
-        - docker
       if: branch = master
       install: skip
       script: travis/release.sh

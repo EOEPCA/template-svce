@@ -3,8 +3,9 @@ jobs:
     - stage: generate docs
       # if: branch = master
 
-      services:
-        - docker
+      # Assume that 'docker' service is stated at the Travis global level. It seems that re-stating it here confuses Travis.
+      # services:
+      #   - docker
 
       before_install:
         - mkdir -p output
