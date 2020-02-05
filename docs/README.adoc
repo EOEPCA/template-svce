@@ -10,14 +10,7 @@ This section documents the pre-requisites for the job.
 
 === gh-pages branch
 
-The gh-pages branch must pre-exist in the repos before the travis job can push to it.
-
-The following steps can be used to create the branch...
-
-[source,bash]
-----
-$ git status
-----
+The travis job pushes the generated doc files (html/images + pdf) to trhe 'gh-pages' branch of the repository. This should be created if it doesn't already exist.
 
 === Travis settings
 
@@ -33,5 +26,7 @@ GH_REF::
 the URL to the GitHub repos (minus the scheme), e.g. 'github.com/eoepca/template-svce'
 
 GH_TOKEN::
-the access token that allows Travis to push to the GitHub repos 'gh-pages' branch. This must be generated within the settings of the EOEPCA repos and pasted in to set the environment variable in Travis. +
+the access token that allows Travis to push to the GitHub repos 'gh-pages' branch. This must be generated as a `Personal Access Token` within the settings of the `EOEPCA-CI` GitHub account (https://github.com/settings/tokens) and pasted in to set the environment variable in Travis. +
 *In doing so, ensure that the 'display value' option is disabled*.
+
+eoepca-ci = a972f3b8d0a9c4e2aee975aeb90f2fee24668e67
