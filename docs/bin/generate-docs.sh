@@ -27,6 +27,6 @@ cp -r stylesheets output
 # Docuemnt Generation - using asciidoctor docker image
 #
 # HTML version
-docker run "${DOCKER_RM}" -v $PWD:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -D /documents/output index.adoc
+docker run ${DOCKER_RM} -v $PWD:/documents/ --name asciidoc-to-html asciidoctor/docker-asciidoctor asciidoctor -r asciidoctor-diagram -D /documents/output index.adoc
 # PDF version
-docker run "${DOCKER_RM}" -v $PWD:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -r asciidoctor-diagram -D /documents/output index.adoc
+docker run ${DOCKER_RM} -v $PWD:/documents/ --name asciidoc-to-pdf asciidoctor/docker-asciidoctor asciidoctor-pdf -r asciidoctor-diagram -D /documents/output index.adoc
