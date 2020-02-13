@@ -1,25 +1,26 @@
-sudo: required
-language: java
-install: false 
-
 services:
   - docker
 
 jobs:
   include:
     - stage: build (compile, unit test, package)
+      language: java
       jdk: openjdk10
+      install: skip
       script: travis/build.sh
 
     - stage: smoke and acceptance test
-      install: skip  # without this there's a `git clone` and `gradlew assemble` executed! 
+      install: skip # without this there's a `git clone` and `gradlew assemble` executed!
       script: travis/acceptanceTest.sh
-      
+
     - stage: release
-      if: branch = master
+      if: branch = master AND NOT type IN (pull_request)
       install: skip
       script: travis/release.sh
-    
+
+import:
+  - docs/.travis.yml
+
 notifications:
   email:
     recipients:
