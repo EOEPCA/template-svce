@@ -4,8 +4,11 @@
 set -euov pipefail
 
 pwd
+ls
 ls build/libs
 ls /
+
+./gradlew shadowJar
 
 # Create a Docker image and tag it as 'travis_<build number>'
 buildTag=travis_${TRAVIS_BRANCH}_$TRAVIS_BUILD_NUMBER
