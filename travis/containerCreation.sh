@@ -3,11 +3,6 @@
 # fail fast settings from https://dougrichardson.org/2018/08/03/fail-fast-bash-scripting.html
 set -euov pipefail
 
-pwd
-ls
-ls build/libs
-ls /
-
 ./gradlew shadowJar
 
 # Create a Docker image and tag it as 'travis_<build number>'
