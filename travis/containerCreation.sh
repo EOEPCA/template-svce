@@ -3,6 +3,9 @@
 # fail fast settings from https://dougrichardson.org/2018/08/03/fail-fast-bash-scripting.html
 set -euov pipefail
 
+cd
+ls build/libs/template-service.jar
+
 # Create a Docker image and tag it as 'travis_<build number>'
 buildTag=travis_${TRAVIS_BRANCH}_$TRAVIS_BUILD_NUMBER
 
