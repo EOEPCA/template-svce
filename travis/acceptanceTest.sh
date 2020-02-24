@@ -4,9 +4,13 @@
 set -euov pipefail
 
 # Check presence of environment variables
-TRAVIS_BRANCH="${TRAVIS_BRANCH:-local}"
-TRAVIS_BUILD_NUMBER="${TRAVIS_BUILD_NUMBER:-NaN}"
+TRAVIS_BRANCH="${TRAVIS_BRANCH:-develop}"
+TRAVIS_BUILD_NUMBER="${TRAVIS_BUILD_NUMBER:-0}"
 
 docker run -d --rm -p 8080:7000 --name template-svc ${DOCKER_USERNAME}/template-service:travis_${TRAVIS_BRANCH}_${TRAVIS_BUILD_NUMBER}
-sleep 15  # wait for startup
-curl -vs http://localhost:8080/search # trivial smoke test
+
+until [ "`docker inspect -f {{.State.Running}} template-svc`"=="true" ]; do
+  sleep 0.1;
+done;
+
+curl -s http://localhost:8080/search # trivial smoke test

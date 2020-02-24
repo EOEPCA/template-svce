@@ -6,8 +6,8 @@ set -euov pipefail
 ./gradlew shadowJar
 
 # Check presence of environment variables
-TRAVIS_BRANCH="${TRAVIS_BRANCH:-local}"
-TRAVIS_BUILD_NUMBER="${TRAVIS_BUILD_NUMBER:-NaN}"
+TRAVIS_BRANCH="${TRAVIS_BRANCH:-develop}"
+TRAVIS_BUILD_NUMBER="${TRAVIS_BUILD_NUMBER:-0}"
 
 
 # Create a Docker image and tag it as 'travis_<build number>'
