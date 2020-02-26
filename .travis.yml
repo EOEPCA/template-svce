@@ -1,6 +1,6 @@
 sudo: required
 language: java
-install: false 
+install: true 
 
 services:
   - docker
