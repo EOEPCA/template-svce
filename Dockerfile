@@ -1,5 +1,5 @@
 # Base container
-FROM openjdk:10-jre-slim
+FROM openjdk:11-jre-slim
 
 # First task: insert Fat-JAR package within the container
 COPY build/libs/template-service.jar /jar/
