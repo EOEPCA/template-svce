@@ -10,7 +10,7 @@ jobs:
   include:
     - stage: build (compile, unit test, package)
       language: java
-      jdk: openjdk10
+      jdk: openjdk11
       install: skip
       script: travis/build.sh
 
