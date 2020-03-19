@@ -6,12 +6,11 @@ set -euov pipefail
 ./gradlew shadowJar
 
 # Check presence of environment variables
-TRAVIS_BRANCH="${TRAVIS_BRANCH:-develop}"
 TRAVIS_BUILD_NUMBER="${TRAVIS_BUILD_NUMBER:-0}"
 
 
 # Create a Docker image and tag it as 'travis_<build number>'
-buildTag=travis_${TRAVIS_BRANCH}_$TRAVIS_BUILD_NUMBER
+buildTag=travis_$TRAVIS_BUILD_NUMBER # We use a temporary build number for tagging, since this is a transient artefact
 
 docker build -t eoepca/template-service .
 docker tag eoepca/template-service eoepca/template-service:$buildTag # Tags container in EOEPCA repository with buildTag
