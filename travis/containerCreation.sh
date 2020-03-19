@@ -14,8 +14,8 @@ TRAVIS_BUILD_NUMBER="${TRAVIS_BUILD_NUMBER:-0}"
 buildTag=travis_${TRAVIS_BRANCH}_$TRAVIS_BUILD_NUMBER
 
 docker build -t eoepca/template-service .
-docker tag eoepca/template-service $DOCKER_USERNAME/template-service:$buildTag
+docker tag eoepca/template-service eoepca/template-service:$buildTag # Tags container in EOEPCA repository with buildTag
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-docker push $DOCKER_USERNAME/template-service:$buildTag   # defaults to docker hub
+docker push eoepca/template-service:$buildTag   # defaults to docker hub EOEPCA repository
