@@ -4,10 +4,11 @@
 set -euov pipefail
 
 # Check presence of environment variables
-TRAVIS_BRANCH="${TRAVIS_BRANCH:-develop}"
 TRAVIS_BUILD_NUMBER="${TRAVIS_BUILD_NUMBER:-0}"
 
-docker run --rm -d -p 8080:7000 --name template-svc ${DOCKER_USERNAME}/template-service:travis_${TRAVIS_BRANCH}_${TRAVIS_BUILD_NUMBER}
+buildTag=travis_$TRAVIS_BUILD_NUMBER # We use a temporary build number for tagging, since this is a transient artefact
+
+docker run --rm -d -p 8080:7000 --name template-svc eoepca/template-service:${buildTag} # Runs container from EOEPCA repository
 
 sleep 15 # wait until the container is running
 
