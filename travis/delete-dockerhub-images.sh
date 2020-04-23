@@ -30,24 +30,26 @@ TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": "'$
 echo "Retrieving repository list ..."
 REPO_LIST=$(curl -s -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${ORG}/?page_size=200 | jq -r '.results|.[]|.name')
 
+# obtain current repository name
+REPO_LOCAL_PATH=`git rev-parse --show-toplevel`
+REPO_NAME=`basename $REPO_LOCAL_PATH`
+
 # delete images and/or tags
-echo "Deleting images and tags for organization: ${ORG}"
+echo "Deleting images and tags for organization: ${ORG} in repository: ${REPO_NAME}"
 for i in ${REPO_LIST}
 do
-  echo "\nEntering repository $i"
-  # Delete repo (all)
-#   echo -n "${i}: "
-#   curl -X DELETE -s -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${ORG}/${i}/
-#   echo "DELETED"
+  if [ "$i" = "$REPO_NAME" ]; then
+    echo "\nEntering repository $i"
 
-  # Delete by tags starting with "travis_"
-  IMAGE_TAGS=$(curl -s -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${ORG}/${i}/tags/?page_size=300 | jq -r '.results|.[]| select (.name | startswith("travis_")) | .name')
-  for j in ${IMAGE_TAGS}
-  do
-     echo -n "  - ${j} ... "
-     curl -X DELETE -s -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${ORG}/${i}/tags/${j}/
-     echo "DELETED"
-  done
+    # Delete by tags starting with "travis_"
+    IMAGE_TAGS=$(curl -s -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${ORG}/${i}/tags/?page_size=300 | jq -r '.results|.[]| select (.name | startswith("travis_")) | .name')
+    for j in ${IMAGE_TAGS}
+    do
+      echo -n "  - ${j} ... "
+      curl -X DELETE -s -H "Authorization: JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${ORG}/${i}/tags/${j}/
+      echo "DELETED"
+    done
+  fi
 done
 
 echo "\nFinished"
