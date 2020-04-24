@@ -18,6 +18,20 @@ if [ -z "$DOCKER_PASSWORD" ]; then
   export DOCKER_PASSWORD=${PASSWORD}
 fi
 
+ALL=false
+while [ "$1" != "" ]; do
+    case $1 in
+        -a | --all )            ALL=true
+                                ;;
+        -h | --help )           #usage
+                                exit
+                                ;;
+        * )                     #usage
+                                exit 1
+    esac
+    shift
+done
+
 # -------
 
 set -e
@@ -35,10 +49,12 @@ REPO_LOCAL_PATH=`git rev-parse --show-toplevel`
 REPO_NAME=`basename $REPO_LOCAL_PATH`
 
 # delete images and/or tags
-echo "Deleting images and tags for organization: ${ORG} in repository: ${REPO_NAME}"
+echo "Deleting images and tags for organization: ${ORG}"
+
+echo $REPO_LIST
 for i in ${REPO_LIST}
 do
-  if [ "$i" = "$REPO_NAME" ]; then
+  if [ "$i" = "$REPO_NAME" ] || [ "$ALL" = "true" ]; then
     echo "\nEntering repository $i"
 
     # Delete by tags starting with "travis_"
