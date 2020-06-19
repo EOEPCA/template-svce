@@ -2,6 +2,8 @@ jobs:
   include:
     - stage: generate docs
       if: tag =~ ^v[0-9.]*$
+      language: minimal
+      install: skip
 
       # Assume that 'docker' service is stated at the Travis global level. It seems that re-stating it here confuses Travis.
       # services:

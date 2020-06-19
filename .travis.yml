@@ -1,6 +1,4 @@
 sudo: required
-language: java
-install: true
 
 services:
   - docker
@@ -20,6 +18,7 @@ jobs:
         - travis/containerCreation.sh
 
     - stage: smoke and acceptance test
+      language: minimal
       install: skip # without this there's a `git clone` and `gradlew assemble` executed!
       script: travis/acceptanceTest.sh
 
