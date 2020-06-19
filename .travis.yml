@@ -1,7 +1,7 @@
 sudo: required
 language: java
-install: true 
-
+jdk: openjdk11
+install: skip
 
 services:
   - docker
@@ -9,24 +9,28 @@ services:
 jobs:
   include:
     - stage: build (compile, unit test, package)
-      language: java
-      jdk: openjdk11
-      install: skip
       script: travis/build.sh
 
-    - stage: container creation and publishing
-      install: skip
-      script: travis/containerCreation.sh
+    - stage: container creation
+      script:
+        - travis/containerCreation.sh
 
     - stage: smoke and acceptance test
+      language: minimal
       install: skip # without this there's a `git clone` and `gradlew assemble` executed!
       script: travis/acceptanceTest.sh
 
-    - stage: release
-      if: branch = master AND NOT type IN (pull_request)
+    - stage: release and tag on DockerHub
+      if: tag =~ ^v[0-9.]*$
+      language: minimal
       install: skip
-      script: travis/release.sh
-      post_script: travis/delete-dockerhub-images.sh
+      deploy:
+        provider: script
+        script: travis/release.sh
+        on:
+          tags: true
+      after_deploy:
+        - travis/delete-dockerhub-images.sh
 
 import:
   - docs/.travis.yml
